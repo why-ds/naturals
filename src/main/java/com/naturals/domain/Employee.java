@@ -1,10 +1,12 @@
 package com.naturals.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,17 +27,17 @@ import lombok.ToString;
 @Entity
 @Table(name="t_employee")
 @EqualsAndHashCode(of = "empno")
-@ToString(exclude= {"position", "department"})
+@ToString(exclude= {"position", "department", "timeAttendance"})
 public class Employee {
 	@Id
 	private String empno;
 	private String empnm;
-	private String positionno;
 	private String deptno;
-	private Timestamp insertempno;
+	private String positionno;
+	private String insertempno;
 	@CreationTimestamp
 	private Timestamp insertdt;
-	private Timestamp updateempno;
+	private String updateempno;
 	@UpdateTimestamp
 	private Timestamp updatedt;
 
@@ -46,4 +48,9 @@ public class Employee {
 	@OneToOne()
 	@JoinColumn(name="deptno", insertable=false, updatable=false)
 	private Department department;
+	
+	@OneToMany
+	@JoinColumn(name="empno")
+	private List<TimeAttendance> timeAttendance;
+	
 }
