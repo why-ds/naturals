@@ -13,26 +13,17 @@ public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance,
 	public default Predicate makePredicate(String type, String keyword) {
 		BooleanBuilder builder = new BooleanBuilder();
 		QTimeAttendance timeAttendance = QTimeAttendance.timeAttendance;
-		builder.and(timeAttendance.tno.gt(0));
 		
-		if(type==null) {
-			return builder;
-		}
-		
-		switch(type) {
-		case "dept":
-			builder.and(timeAttendance.deptno.like("%" + keyword + "%"));
-			break;
-		case "empnm":
-			builder.and(timeAttendance.employee.empnm.like("%"+ keyword + "%"));
-			break;
-		case "empno":
-			builder.and(timeAttendance.empno.like("%" + keyword + "%"));
-			break;
-		case "memo":
-			builder.and(timeAttendance.memo.like("%" + keyword + "%"));
-		}
-		
+		  builder.and(timeAttendance.tno.gt(0));
+		  
+		  if(type==null) { return builder; }
+		  
+		  switch(type) { case "dept": builder.and(timeAttendance.deptno.like("%" +
+		  keyword + "%")); break; case "empnm":
+		  builder.and(timeAttendance.employee.empnm.like("%"+ keyword + "%")); break;
+		  case "empno": builder.and(timeAttendance.empno.like("%" + keyword + "%"));
+		  break; case "memo": builder.and(timeAttendance.memo.like("%" + keyword + "%")); }
+		 
 		return builder;
 	}
 	
