@@ -18,11 +18,20 @@ public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance,
 		  
 		  if(type==null) { return builder; }
 		  
-		  switch(type) { case "dept": builder.and(timeAttendance.deptno.like("%" +
-		  keyword + "%")); break; case "empnm":
-		  builder.and(timeAttendance.employee.empnm.like("%"+ keyword + "%")); break;
-		  case "empno": builder.and(timeAttendance.empno.like("%" + keyword + "%"));
-		  break; case "memo": builder.and(timeAttendance.memo.like("%" + keyword + "%")); }
+		  switch(type) {
+		  case "d": 
+			  builder.and(timeAttendance.department.deptnm.like("%"+keyword+"%"));
+			  break;
+		  case "enm":
+			  builder.and(timeAttendance.employee.empnm.like("%"+ keyword + "%"));
+			  break;
+		  case "eno":
+			  builder.and(timeAttendance.empno.like("%" + keyword + "%"));
+			  break; 
+		  case "m": 
+			  builder.and(timeAttendance.memo.like("%" + keyword + "%"));
+			  break;
+		  }
 		 
 		return builder;
 	}

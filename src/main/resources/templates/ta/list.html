@@ -47,16 +47,16 @@
 	</nav> 
 	<div class="form-row justify-content-center">
     	<div class="col-auto">
-			<select class="custom-select custom-select-sm" id="inlineFormCustomSelect">
+			<select class="custom-select custom-select-sm" id="searchType">
 				<option>전체</option>
-				<option value='dept'>부서</option>
-				<option value='empnm'>이름</option>
-				<option value='empno'>사번</option>
-				<option value='memo'>메모</option>
+				<option value='d' th:selected="${pageVO.type} == 'd'">부서</option>
+				<option value='enm' th:selected="${pageVO.type} == 'enm'">이름</option>
+				<option value='eno' th:selected="${pageVO.type} == 'eno'">사번</option>
+				<option value='m' th:selected="${pageVO.type} == 'm'">메모</option>
 			</select>
 		</div>
 	    <div class="col-auto">
-			<input type='text' id='searchKeyword' class='form-control form-control-sm' >
+			<input type='text' id='searchKeyword' th:value='${pageVO.keyword}' class='form-control form-control-sm' >
 		</div>
 		<div  class="col-auto">
 			<button id='searchBtn' class='btn btn-secondary btn-sm'>검색</button>
@@ -67,6 +67,8 @@
 	<form id='f1' th:action="@{list}" method="get" class='col-sm-3'>
 		<input type='hidden' name='page' th:value=${result.currentPageNum}>
 		<input type='hidden' name='size' th:value=${result.currentPage.pageSize}>
+		<input type='hidden' name='type' th:value=${pageVO.type}>
+		<input type='hidden' name='keyword' th:value=${pageVO.keyword}>
 	</form>
 </div>
 
@@ -81,6 +83,21 @@
 			formObj.find('[name="page"]').val($(this).attr('href'));
 			formObj.submit();
 		});
+		
+
+		
+		$("#searchBtn").click(function(e){
+			var typeStr = $("#searchType").find(":selected").val();
+			var keywordStr = $("#searchKeyword").val();
+			
+			console.log(typeStr, "" , keywordStr);
+			
+			formObj.find("[name='type']").val(typeStr);
+			formObj.find("[name='keyword']").val(keywordStr);
+			formObj.find("[name='page']").val("1");
+			formObj.submit();
+		});
+
 	});
 	</script>
 </th:block>
