@@ -6,8 +6,13 @@
 
 <div class="body" layout:fragment="body">
 
+<div class="float-right">
+	<a class="badge badge-secondary" th:href="@{register}">신규등록</a>
+</div>
+
+
 <table class="table">
-  <thead class="thead-dark">
+  <thead class="thead-light">
     <tr>
       <th scope="col">부서</th>
       <th scope="col">직급</th>
@@ -36,7 +41,7 @@
 		 		<li class="page-item" th:if="${result.prevPage}">
 					<a th:href="${result.prevPage.pageNumber}+1" class="page-link"> PREV</a>
 				</li>
-				<li class="page-item" th:classappend="${p.pageNumber == result.currentPageNum-1}?active:''" th:each="p:${result.pageList}">
+				<li class="page-item page-item-warning" th:classappend="${p.pageNumber == result.currentPageNum-1}?active:''" th:each="p:${result.pageList}">
 					<a th:href="${p.pageNumber}+1" class="page-link" >[[${p.pageNumber} +1]]</a>
 				</li>
 				<li class="page-item" th:if="${result.nextPage}">
@@ -45,6 +50,9 @@
 			</ul>
 		</div>
 	</nav> 
+	
+	
+	
 	<div class="form-row justify-content-center">
     	<div class="col-auto">
 			<select class="custom-select custom-select-sm" id="searchType">
@@ -55,14 +63,13 @@
 				<option value='m' th:selected="${pageVO.type} == 'm'">메모</option>
 			</select>
 		</div>
-	    <div class="col-auto">
+		<div class="col-auto">
 			<input type='text' id='searchKeyword' th:value='${pageVO.keyword}' class='form-control form-control-sm' >
 		</div>
 		<div  class="col-auto">
-			<button id='searchBtn' class='btn btn-secondary btn-sm'>검색</button>
+			<button id='searchBtn' class='btn btn-outline-secondary btn-sm'>검색</button>
 		</div>
 	</div>
-	
 	<!-- SCRIPT -->
 	<form id='f1' th:action="@{list}" method="get" class='col-sm-3'>
 		<input type='hidden' name='page' th:value=${result.currentPageNum}>
@@ -75,30 +82,39 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-	$(document).ready(function() {
-		var formObj = $("#f1");
-		$(".pagination a").click(function(e) {
+	
+	$(window).on(function(){
 			
-			e.preventDefault();
-			formObj.find('[name="page"]').val($(this).attr('href'));
-			formObj.submit();
+			var msg = [[${msg}]];
+			
+			
+			if(msg =='success') {
+				alert("정상적으로 처리되었습니다.");
+				var stateObj = { msg: "" };
+			}
+		}); 
+	
+		$(document).ready(function() {
+			var formObj = $("#f1");
+			$(".pagination a").click(function(e) {
+				e.preventDefault();
+				formObj.find('[name="page"]').val($(this).attr('href'));
+				formObj.submit();
+			});
+			
+			$("#searchBtn").click(function(e){
+				
+				var typeStr = $("#searchType").find(":selected").val();
+				var keywordStr = $("#searchKeyword").val();
+				
+				console.log(typeStr, "" , keywordStr);
+				
+				formObj.find("[name='type']").val(typeStr);
+				formObj.find("[name='keyword']").val(keywordStr);
+				formObj.find("[name='page']").val("1");
+				formObj.submit();
+			});
 		});
-		
-
-		
-		$("#searchBtn").click(function(e){
-			var typeStr = $("#searchType").find(":selected").val();
-			var keywordStr = $("#searchKeyword").val();
-			
-			console.log(typeStr, "" , keywordStr);
-			
-			formObj.find("[name='type']").val(typeStr);
-			formObj.find("[name='keyword']").val(keywordStr);
-			formObj.find("[name='page']").val("1");
-			formObj.submit();
-		});
-
-	});
 	</script>
 </th:block>
 

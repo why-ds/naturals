@@ -44,7 +44,9 @@ public class TAController {
 	
 	@PostMapping("/register")
 	public String registerPOST(@ModelAttribute("vo")TimeAttendance vo, RedirectAttributes rttr) {
+		
 		log.info("register post");
+		
 		repo.save(vo);
 		rttr.addFlashAttribute("msg","success");
 		
