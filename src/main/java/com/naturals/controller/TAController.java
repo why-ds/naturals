@@ -5,13 +5,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.naturals.domain.Department;
+import com.naturals.domain.Position;
+import com.naturals.domain.TAType;
 import com.naturals.domain.TimeAttendance;
+import com.naturals.persistence.DepartmentRepository;
+import com.naturals.persistence.PositionRepository;
+import com.naturals.persistence.TATypeRepository;
 import com.naturals.persistence.TimeAttendanceRepository;
 import com.naturals.vo.PageMaker;
 import com.naturals.vo.PageVO;
@@ -25,7 +32,16 @@ public class TAController {
 	
 	@Autowired
 	TimeAttendanceRepository repo;
-		
+
+	@Autowired
+	TATypeRepository tarepo;
+
+	@Autowired
+	DepartmentRepository deptRepo;
+
+	@Autowired
+	PositionRepository posiRepo;
+	
 	@GetMapping("/list")
 	public void view(@ModelAttribute("pageVO") PageVO vo, Model model){
 		Pageable page = vo.makePageable(0, "tno");		
@@ -38,7 +54,16 @@ public class TAController {
 	}	
 	
 	@GetMapping("/register")
-	public void registerGET(@ModelAttribute("vo")TimeAttendance vo) {
+	public void registerGET(@ModelAttribute("vo")TimeAttendance vo, ModelMap model) {
+		
+		Iterable<TAType> tAType = tarepo.findAll();
+		Iterable<Department> department = deptRepo.findAll();
+		Iterable<Position> position = posiRepo.findAll();
+
+		model.addAttribute("result", tAType);
+		model.addAttribute("result2", department);
+		model.addAttribute("result3", position);
+		
 		log.info("register get");
 	}
 	
@@ -49,6 +74,8 @@ public class TAController {
 		
 		repo.save(vo);
 		rttr.addFlashAttribute("msg","success");
+		
+		log.info(String.valueOf(rttr.getFlashAttributes()));
 		
 		return "redirect:/ta/list";
 	}

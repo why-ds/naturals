@@ -8,22 +8,36 @@
 			<label>사번</label>
 			<input class="form-control" name="empno" th:value="${vo.empno}"/>
 		</div>
-		
-		<div class="form-group">
-			<label>출근시간</label>
-			<input class="form-control" name="starttime" th:value="${vo.starttime}"/>
+		<div class="form-group ">
+			<label>부서</label>
+			<select class="custom-select"  name="deptno" >
+				<option >부서</option>
+				<option th:each="result2:${result2}"th:value="${result2.deptno}">[[${result2.deptnm}]]</option>
+			</select>
+		</div>
+		<div class="form-group ">
+			<label>직급</label>
+			<select class="custom-select"  name="positionno" >
+				<option >직급</option>
+				<option th:each="result3:${result3}"th:value="${result3.positionno}">[[${result3.positionnm}]]</option>
+			</select>
 		</div>
 		
 		<div class="form-group">
-			<label>출근시간</label>
-			<input class="form-control" name="endtime" th:value="${vo.endtime}"/>
+			<label>출퇴근근시간</label>
+			<input type="date" class="form-control" name="taday" th:value="${vo.taday}"/>
+			<input type="time" class="form-control" name="starttime" th:value="${vo.starttime}"/>
+			<input type="time" class="form-control" name="endtime" th:value="${vo.endtime}"/>
+			<select class="custom-select"  name="tatypeno" >
+				<option >타입</option>
+				<option th:each="result:${result}"th:value="${result.tatypeno}">[[${result.tatypenm}]]</option>
+			</select>
 		</div>
 		
 		<button type="submit" class="btn btn-default">Submit</button>
 		<button type="reset" class="btn btn-primary">Reset</button>
 	</form>	
 </div>	
-
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">

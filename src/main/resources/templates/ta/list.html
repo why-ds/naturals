@@ -2,6 +2,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{/layout/layout1}">
 
+
 <!-- xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" -->
 
 <div class="body" layout:fragment="body">
@@ -12,21 +13,23 @@
 
 
 <table class="table">
-  <thead class="thead-light">
+  <thead class="thead-light" align="center">
     <tr>
       <th scope="col">부서</th>
       <th scope="col">직급</th>
       <th scope="col">성명</th>
+      <th scope="col">날짜</th>
       <th scope="col">출근시간</th>
       <th scope="col">퇴근시간</th>
       <th scope="col">비고</th>
     </tr>
   </thead> 
-  <tbody th:with="result=${result.result}">
+  <tbody th:with="result=${result.result}" align="center">
     <tr th:each="timeAttendance:${result.content}">
       <td th:text="${timeAttendance.department.deptnm}"></td>
       <td th:text="${timeAttendance.position.positionnm}"></td>
       <td th:text="${timeAttendance.employee.empnm}"></td>
+      <td th:text="${timeAttendance.taday}"></td>
       <td th:text="${timeAttendance.starttime}"></td>
       <td th:text="${timeAttendance.endtime}"></td>
       <td th:text="${timeAttendance.memo}"></td>
@@ -56,7 +59,7 @@
 	<div class="form-row justify-content-center">
     	<div class="col-auto">
 			<select class="custom-select custom-select-sm" id="searchType">
-				<option>전체</option>
+				<option>검색</option>
 				<option value='d' th:selected="${pageVO.type} == 'd'">부서</option>
 				<option value='enm' th:selected="${pageVO.type} == 'enm'">이름</option>
 				<option value='eno' th:selected="${pageVO.type} == 'eno'">사번</option>
@@ -82,20 +85,21 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-	
-	$(window).on(function(){
+
+		$(window).on('load', function(){
 			
 			var msg = [[${msg}]];
 			
-			
 			if(msg =='success') {
-				alert("정상적으로 처리되었습니다.");
+				alert("등록이 완료되었습니다.");
 				var stateObj = { msg: "" };
 			}
-		}); 
+		});
 	
 		$(document).ready(function() {
+			
 			var formObj = $("#f1");
+			
 			$(".pagination a").click(function(e) {
 				e.preventDefault();
 				formObj.find('[name="page"]').val($(this).attr('href'));

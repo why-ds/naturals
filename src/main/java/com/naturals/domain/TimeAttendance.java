@@ -1,7 +1,6 @@
 package com.naturals.domain;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +27,7 @@ import lombok.ToString;
 @Entity
 @Table(name="t_timeattendance")
 @EqualsAndHashCode(of = "tno")
-@ToString(exclude= {"employee","position","department"})
+@ToString(exclude= {"employee","position","department", "tatype"})
 public class TimeAttendance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +35,8 @@ public class TimeAttendance {
 	private String deptno;
 	private String positionno;
 	private String empno;
-	private String gymnastics;
+	private String tatypeno;
+/*	private String gymnastics;
 	private String unchk;
 	private String dayoff;
 	private String halfdayoff;
@@ -46,10 +46,11 @@ public class TimeAttendance {
 	private String late;
 	private String leaveearly;
 	private String goingout;
-	private String leaveofabsence;
+	private String leaveofabsence;*/
 	private String memo;
-	private Timestamp starttime;
-	private Timestamp endtime;
+	private String taday;
+	private String starttime;
+	private String endtime;
 	private String insertempno;
 	@CreationTimestamp
 	private Timestamp insertdt;
@@ -68,5 +69,9 @@ public class TimeAttendance {
 	@ManyToOne
 	@JoinColumn(name="positionno", insertable=false, updatable=false)
 	private Position position;
+
+	@ManyToOne
+	@JoinColumn(name="tatypeno", insertable=false, updatable=false)
+	private TAType tatype;
 	
 }
