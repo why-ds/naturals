@@ -1,0 +1,81 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout1}">
+
+<div class="form-group" layout:fragment="body">
+
+	<form id="f1">
+		
+		<div class="form-group">
+			<input type="hidden" name="tno" th:value="${vo.tno}"/>		
+		</div>
+	
+		<div class="form-group ">
+			<label>사번</label>
+			<input class="form-control" name="empno" th:value="${vo.empno}" readonly="readonly"/>
+		</div>
+		
+		<div class="form-group ">
+			<label>부서</label>
+			<select class="custom-select"  name="deptno"   disabled>
+				<option >부서</option>
+				<option th:each="result2:${result2}" th:value="${result2.deptno}" th:text="${result2.deptnm}"  th:selected="${result2.deptno == vo.deptno}"></option>
+			</select>
+		</div>
+		
+		<div class="form-group ">
+			<label>직급</label>
+			<select class="custom-select"  name="positionno"   disabled>
+				<option >직급</option>
+				<option th:each="result3:${result3}" th:value="${result3.positionno}" th:text="${result3.positionnm}"  th:selected="${result3.positionno == vo.positionno}"></option>
+			</select>
+		</div>
+		
+		<div class="form-group">
+			<label>출퇴근근시간</label>
+			<input type="date" class="form-control" name="taday" th:value="${vo.taday}"/>
+			<input type="time" class="form-control" name="starttime" th:value="${vo.starttime}"/>
+			<input type="time" class="form-control" name="endtime" th:value="${vo.endtime}"/>
+			<select class="custom-select"  name="tatypeno" >
+				<option >타입</option>
+				<option th:each="result:${result}" th:value="${result.tatypeno}" th:text="${result.tatypenm}"  th:selected="${result.tatypeno == vo.tatypeno}"></option>
+			</select>
+		</div>
+		
+		<div class="pull-right">
+			<a href="#" class="btn btn-warning modbtn">Modify</a>
+			<a href="#" class="btn btn-danger delbtn">Delete</a>
+			<a th:href="@{list(page=${pageVO.page},size=${pageVO.size},type=${pageVO.type},keyword=${pageVO.keyword},tno=${vo.tno})}" class="btn btn-primary">
+			Cancel</a>
+		</div>
+	</form>	
+</div>	
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+
+	$(document).ready(function(){
+	
+		var formObj = $("#f1");
+		
+		$(".delbtn").click(function(){
+			
+			formObj.attr("action","delete");
+			formObj.attr("method", "post");
+			
+			formObj.submit();
+			
+		});
+		
+		$(".modbtn").click(function(){
+			
+			formObj.attr("action","modify");
+			formObj.attr("method", "post");
+			
+			formObj.submit();
+		});
+	});
+	</script>
+</th:block>
+
+</html>

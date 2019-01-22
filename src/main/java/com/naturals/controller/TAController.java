@@ -43,7 +43,7 @@ public class TAController {
 	PositionRepository posiRepo;
 	
 	@GetMapping("/list")
-	public void view(@ModelAttribute("pageVO") PageVO vo, Model model){
+	public void list(@ModelAttribute("pageVO") PageVO vo, Model model){
 		Pageable page = vo.makePageable(0, "tno");		
 		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword()), page);
 
@@ -80,4 +80,77 @@ public class TAController {
 		return "redirect:/ta/list";
 	}
 	
+
+	@GetMapping("/view")
+	public void view(Long tno, @ModelAttribute("pageVO") PageVO vo, Model model) {
+		
+		log.info("TNO :::::: " + tno);
+		
+		Iterable<TAType> tAType = tarepo.findAll();
+		Iterable<Department> department = deptRepo.findAll();
+		Iterable<Position> position = posiRepo.findAll();
+
+		model.addAttribute("result", tAType);
+		model.addAttribute("result2", department);
+		model.addAttribute("result3", position);
+		
+		repo.findById(tno).ifPresent(timeAttendance -> model.addAttribute("vo", timeAttendance));
+	}
+
+	@GetMapping("/modify")
+	public void modify(Long tno, @ModelAttribute("pageVO") PageVO vo, Model model) {
+		
+		log.info("MODIFY TNO : " + tno);
+		
+		Iterable<TAType> tAType = tarepo.findAll();
+		Iterable<Department> department = deptRepo.findAll();
+		Iterable<Position> position = posiRepo.findAll();
+
+		model.addAttribute("result", tAType);
+		model.addAttribute("result2", department);
+		model.addAttribute("result3", position);
+		
+		
+		repo.findById(tno).ifPresent(timeAttendance -> model.addAttribute("vo", timeAttendance));
+		
+	}
+
+	@PostMapping("/delete")
+	public String delete(Long tno, PageVO vo, RedirectAttributes rttr) {
+		
+		log.info("DELETE  TNO : " + tno);
+		
+		repo.deleteById(tno);
+		
+		rttr.addFlashAttribute("msg", "success");
+		rttr.addAttribute("page", vo.getPage());
+		rttr.addAttribute("size", vo.getSize());
+		rttr.addAttribute("type", vo.getType());
+		rttr.addAttribute("keyword", vo.getKeyword());
+		
+		return "redirect:/ta/list";
+	}
+	
+	@PostMapping("modify")
+	public String modifyPost(TimeAttendance timeAttendance, PageVO vo, RedirectAttributes rttr) {
+		
+		log.info("MODIFY TA :::: " + timeAttendance);
+		
+		repo.findById(timeAttendance.getTno()).ifPresent(origin->{
+			origin.setStarttime(timeAttendance.getStarttime());
+			origin.setEndtime(timeAttendance.getEndtime());
+			origin.setTatypeno(timeAttendance.getTatypeno());
+			
+			repo.save(origin);
+			rttr.addFlashAttribute("msg", "success");
+			rttr.addAttribute("tno", origin.getTno());
+		});
+		
+		rttr.addAttribute("page", vo.getPage());
+		rttr.addAttribute("size", vo.getSize());
+		rttr.addAttribute("type", vo.getType());
+		rttr.addAttribute("keyword", vo.getKeyword());
+		
+		return "redirect:/ta/view";
+	}
 }

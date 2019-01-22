@@ -21,18 +21,20 @@
       <th scope="col">날짜</th>
       <th scope="col">출근시간</th>
       <th scope="col">퇴근시간</th>
+      <th scope="col">구분</th>
       <th scope="col">비고</th>
     </tr>
   </thead> 
   <tbody th:with="result=${result.result}" align="center">
+      
     <tr th:each="timeAttendance:${result.content}">
-      <td th:text="${timeAttendance.department.deptnm}"></td>
-      <td th:text="${timeAttendance.position.positionnm}"></td>
-      <td th:text="${timeAttendance.employee.empnm}"></td>
-      <td th:text="${timeAttendance.taday}"></td>
-      <td th:text="${timeAttendance.starttime}"></td>
-      <td th:text="${timeAttendance.endtime}"></td>
-      <td th:text="${timeAttendance.memo}"></td>
+      <td>[[${timeAttendance.department.deptnm}]]</td>
+      <td>[[${timeAttendance.position.positionnm}]]</td>      <td><a th:href='${timeAttendance.tno}' class="taLink">[[${timeAttendance.employee.empnm}]]</a></td>
+      <td>[[${timeAttendance.taday}]]</td>
+      <td>[[${timeAttendance.starttime}]]</td>
+      <td>[[${timeAttendance.endtime}]]</td>
+      <td>[[${timeAttendance.tatype.tatypenm}]]</td>
+      <td>[[${timeAttendance.memo}]]</td>
     </tr> 
   </tbody>
 </table>
@@ -103,6 +105,17 @@
 			$(".pagination a").click(function(e) {
 				e.preventDefault();
 				formObj.find('[name="page"]').val($(this).attr('href'));
+				formObj.submit();
+			});
+			
+			$(".taLink").click(function(e){
+
+				e.preventDefault();
+				
+				var taNo = $(this).attr("href");
+				formObj.attr("action", [[@{'/ta/view'}]]);
+				formObj.append("<input type='hidden' name='tno' value='"+taNo+"'>");
+				
 				formObj.submit();
 			});
 			
