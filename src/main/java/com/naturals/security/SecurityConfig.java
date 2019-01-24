@@ -16,8 +16,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		log.info("Security configuration");
 		
 		http.authorizeRequests()
-//					.antMatchers("/guest/**").permitAll()
-					.antMatchers("/ta/**").hasRole("MANAGER");
+					.antMatchers("/guest/**").permitAll()
+					.antMatchers("/ta/**").hasRole("MANAGER")
+					.antMatchers("/ta/**").hasRole("ADMIN");
 		http.formLogin().loginPage("/login");
 	}
 	
