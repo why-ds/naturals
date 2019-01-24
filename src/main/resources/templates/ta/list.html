@@ -92,10 +92,16 @@
 			
 			var msg = [[${msg}]];
 			
-			if(msg =='success') {
+			if(msg =='regSuccess') {
 				alert("등록이 완료되었습니다.");
 				var stateObj = { msg: "" };
 			}
+			if(msg =='delSuccess') {
+				alert("삭제가 완료되었습니다.");
+				var stateObj = { msg: "" };
+			}
+			
+			
 		});
 	
 		$(document).ready(function() {

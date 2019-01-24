@@ -48,6 +48,16 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
+	$(window).on('load', function(){
+		
+		var msg = [[${msg}]];
+		
+		if(msg =='modSuccess') {
+			alert("수정이 완료되었습니다.");
+			var stateObj = { msg: "" };
+		}		
+		
+	});
 	</script>
 </th:block>
 

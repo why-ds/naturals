@@ -53,6 +53,7 @@ public class TAController {
 		model.addAttribute("result", new PageMaker(result));
 	}	
 	
+	
 	@GetMapping("/register")
 	public void registerGET(@ModelAttribute("vo")TimeAttendance vo, ModelMap model) {
 		
@@ -73,7 +74,7 @@ public class TAController {
 		log.info("register post");
 		
 		repo.save(vo);
-		rttr.addFlashAttribute("msg","success");
+		rttr.addFlashAttribute("msg","regSuccess");
 		
 		log.info(String.valueOf(rttr.getFlashAttributes()));
 		
@@ -127,6 +128,8 @@ public class TAController {
 		rttr.addAttribute("size", vo.getSize());
 		rttr.addAttribute("type", vo.getType());
 		rttr.addAttribute("keyword", vo.getKeyword());
+
+		rttr.addFlashAttribute("msg","delSuccess");
 		
 		return "redirect:/ta/list";
 	}
@@ -142,7 +145,7 @@ public class TAController {
 			origin.setTatypeno(timeAttendance.getTatypeno());
 			
 			repo.save(origin);
-			rttr.addFlashAttribute("msg", "success");
+			rttr.addFlashAttribute("msg", "modSuccess");
 			rttr.addAttribute("tno", origin.getTno());
 		});
 		

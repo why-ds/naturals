@@ -3,7 +3,9 @@ package com.naturals.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -32,6 +34,7 @@ public class Employee {
 	@Id
 	private String empno;
 	private String empnm;
+	private String emppw;
 	private String deptno;
 	private String positionno;
 	private String insertempno;
@@ -52,5 +55,9 @@ public class Employee {
 	@OneToMany
 	@JoinColumn(name="empno")
 	private List<TimeAttendance> timeAttendance;
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="employee")
+	private List<EmployeeRole> roles;
 	
 }
