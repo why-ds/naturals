@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -27,16 +29,18 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name="t_employee")
+@Table(name="t_employee", uniqueConstraints = {@UniqueConstraint(columnNames = {"empno"})})
 @EqualsAndHashCode(of = "empno")
 @ToString(exclude= {"position", "department", "timeAttendance"})
 public class Employee {
 	@Id
 	private String empno;
 	private String empnm;
-	private String emppw;
+	private String password;
 	private String deptno;
 	private String positionno;
+	@Column(columnDefinition="varchar default 1") 
+	private String enabled;
 	private String insertempno;
 	@CreationTimestamp
 	private Timestamp insertdt;

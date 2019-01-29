@@ -3,6 +3,7 @@ package com.naturals.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -44,15 +45,17 @@ public class TAController {
 	
 	@GetMapping("/list")
 	public void list(@ModelAttribute("pageVO") PageVO vo, Model model){
-		Pageable page = vo.makePageable(0, "tno");		
-		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword()), page);
-
-		log.info("LIST CALLED" + page);
-		log.info("LIST CALLED" + result);
+		Pageable page = vo.makePageable(0, "tno");
 		
+//		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword()), page);
+		
+		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), empno), page);
+		
+
 		model.addAttribute("result", new PageMaker(result));
 	}	
-	
 	
 	@GetMapping("/register")
 	public void registerGET(@ModelAttribute("vo")TimeAttendance vo, ModelMap model) {

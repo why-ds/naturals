@@ -38,7 +38,7 @@ public class TARepositoryTests {
 	@Test
 	public void testLIst2() {
 		Pageable pageable = PageRequest.of(0, 20, Direction.DESC, "tno");
-		Page<TimeAttendance> result = repo.findAll(repo.makePredicate("dept", "0001"), pageable);
+		Page<TimeAttendance> result = repo.findAll(repo.makePredicate("dept", "0001", ""), pageable);
 
 		log.info("PAGE : "+result.getPageable());
 		log.info("============================");

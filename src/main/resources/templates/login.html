@@ -26,10 +26,10 @@
 		<div class="modal-body">
 			<form method="post">
 				<div class="form-group">
-					<input type="text" class="form-control" id="empno" name="empno" placeholder="사번"  required="required">	
+					<input type="text" class="form-control" id="username" name="username" placeholder="사번"  required="required">	
 				</div>
 				<div class="form-group">
-					<input type="password" class="form-control" id="emppw" name="emppw" placeholder="비밀번호"  required="required">
+					<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호"  required="required">
 				</div>        
 				<div class="form-group">
 					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
