@@ -29,22 +29,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		log.info("configure1");
+
 		http.authorizeRequests()
-			.antMatchers("/ta/**")
-			.hasAnyRole("ADMIN");
+			.antMatchers("/ta/**").permitAll();
+//			.hasAnyRole("ADMIN");
 //			.antMatchers("/ta/register")
 //			.hasAnyRole("USER", "ADMIN");
-		log.info("configure2");
+
 		http.formLogin()
 			.loginPage("/login")
 			.successHandler(new LoginSuccessHandler());
-		log.info("configure3");
+
 		http.logout()
 			.logoutUrl("/logout")
 			.logoutSuccessUrl("/")
 			.invalidateHttpSession(true);
-		log.info("configure4");
+
 		http.rememberMe()
 		    .key("ta")
 		    .userDetailsService(taUserService)
