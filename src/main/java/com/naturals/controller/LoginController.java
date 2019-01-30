@@ -20,10 +20,9 @@ public class LoginController {
 	EmployeeRepository repo;
 
 	@GetMapping("/login")
-	public void login(String username) {
+	public void login() {
 		log.info("login CALLED");
 	}
-
 
 	@GetMapping("/accessDenied")
 	public void accessDenied() {

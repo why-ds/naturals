@@ -13,6 +13,7 @@ import com.naturals.domain.EmployeeRole;
 import lombok.Getter;
 import lombok.extern.java.Log;
 
+@SuppressWarnings("serial")
 @Getter
 @Log
 public class TASecurityUser extends User {

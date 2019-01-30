@@ -51,6 +51,8 @@ public class TAController {
 		
 		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
 		
+		log.info(empno+"===============empno");
+		
 		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), empno), page);
 
 		model.addAttribute("result", new PageMaker(result));

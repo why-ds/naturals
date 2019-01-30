@@ -1,8 +1,6 @@
 package com.naturals.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,12 +12,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name="t_employee_role")
+@Table(name="authorities")
 @EqualsAndHashCode(of = "empno")
 @ToString
-public class EmployeeRole {
+public class Authorities {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String empno;
 	private String rolenm;
 }

@@ -31,7 +31,7 @@ import lombok.ToString;
 @Entity
 @Table(name="t_employee", uniqueConstraints = {@UniqueConstraint(columnNames = {"empno"})})
 @EqualsAndHashCode(of = "empno")
-@ToString(exclude= {"position", "department", "timeAttendance"})
+@ToString(exclude= {"position", "department", "timeAttendance", "roles"})
 public class Employee {
 	@Id
 	private String empno;
