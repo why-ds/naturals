@@ -3,6 +3,8 @@ package com.naturals.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,10 @@ import lombok.extern.java.Log;
 @RequestMapping("/ta/")
 @Log
 public class TAController {
+
+	@Autowired 
+	MailSender sender;
+	
 	
 	@Autowired
 	TimeAttendanceRepository repo;
@@ -160,4 +166,30 @@ public class TAController {
 		
 		return "redirect:/ta/view";
 	}
+
+	
+	@GetMapping("/calendar")
+	public void calendar() {
+		log.info("calendar호출");
+	}
+
+	@GetMapping("/sendEmail")
+	public void sendMail(Long tno, RedirectAttributes rttr) { 
+		
+		log.info(tno+"========TNO TEST");
+		
+		String positon = repo.findById(tno).get().getPosition().getPositionnm();
+		String name = repo.findById(tno).get().getEmployee().getEmpnm();
+		String tatype = repo.findById(tno).get().getTatype().getTatypenm();
+		
+		SimpleMailMessage msg = new SimpleMailMessage();
+		
+//		msg.setFrom("test@mail.com"); 
+//		누구한테 보낼지 결정해야함
+		msg.setTo("dsyoon@naturalsolution.co.kr"); 
+		msg.setSubject(name+" "+positon+" "+tatype+" 관련 문의"); 
+		msg.setText("TEST 메일입니다. 죄송합니다."); 
+		this.sender.send(msg);
+	}	
+	
 }

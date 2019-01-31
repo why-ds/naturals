@@ -21,6 +21,7 @@
       <th scope="col">퇴근시간</th>
       <th scope="col">구분</th>
       <th scope="col">비고</th>
+      <th scope="col">문의하기</th>
     </tr>
   </thead> 
   <tbody th:with="result=${result.result}" align="center">
@@ -33,9 +34,35 @@
       <td>[[${timeAttendance.endtime}]]</td>
       <td>[[${timeAttendance.tatype.tatypenm}]]</td>
       <td>[[${timeAttendance.memo}]]</td>
+      <td><button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target='#emailModalCenter'>문의</button></td>
     </tr> 
   </tbody>
 </table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="emailModalCenter" tabindex="-1" role="dialog" aria-labelledby="emailModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">내용을 작성해주세요.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div class="form-group">
+           <textarea class="form-control" id="emailContent"></textarea>
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-outline-secondary">문의하기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
  <!-- 페이징 시작 -->
 	<nav>
@@ -117,9 +144,22 @@
 				e.preventDefault();
 				
 				var taNo = $(this).attr("href");
+				var taNo = $(this).attr("href");
+				
 				formObj.attr("action", [[@{'/ta/view'}]]);
 				formObj.append("<input type='hidden' name='tno' value='"+taNo+"'>");
+				formObj.append("<input type='hidden' name='emailContent' value='"+taNo+"'>");
+				formObj.submit();
+			});
+			
+			$(".taLink2").click(function(e){
+
+				e.preventDefault();
 				
+				var taNo = $(this).attr("href");
+				
+				formObj.attr("action", [[@{'/ta/sendEmail'}]]);
+				formObj.append("<input type='hidden' name='tno' value='"+taNo+"'>");
 				formObj.submit();
 			});
 			
@@ -135,6 +175,7 @@
 				formObj.find("[name='page']").val("1");
 				formObj.submit();
 			});
+			
 		});
 	</script>
 </th:block>

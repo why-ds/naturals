@@ -39,6 +39,7 @@ public class Employee {
 	private String password;
 	private String deptno;
 	private String positionno;
+	private String email;
 	@Column(columnDefinition="varchar default 1") 
 	private String enabled;
 	private String insertempno;

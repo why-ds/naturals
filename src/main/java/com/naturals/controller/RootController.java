@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RootController {
 	
-	/*@Autowired
-	TimeAttendance timeAttendance;*/
-	
 	@RequestMapping("/")
 	public String index(){
 		return "/index";
 	}
+	
 }
