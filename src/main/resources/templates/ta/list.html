@@ -34,7 +34,7 @@
       <td>[[${timeAttendance.endtime}]]</td>
       <td>[[${timeAttendance.tatype.tatypenm}]]</td>
       <td>[[${timeAttendance.memo}]]</td>
-      <td><button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target='#emailModalCenter'>문의</button></td>
+      <td><button type="button" id="openEmailModal" class="btn btn-outline-secondary" data-toggle="modal" th:data-id='${timeAttendance.tno}' data-target='#emailModalCenter'>문의</button></td>
     </tr> 
   </tbody>
 </table>
@@ -52,12 +52,13 @@
       </div>
       <div class="modal-body">
          <div class="form-group">
+         	<input type="hidden" name='etno'/>
            <textarea class="form-control" id="emailContent"></textarea>
          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-        <button type="button" class="btn btn-outline-secondary">문의하기</button>
+        <button type="button" class="btn btn-outline-secondary" id="sendEmail">문의하기</button>
       </div>
     </div>
   </div>
@@ -144,11 +145,9 @@
 				e.preventDefault();
 				
 				var taNo = $(this).attr("href");
-				var taNo = $(this).attr("href");
 				
 				formObj.attr("action", [[@{'/ta/view'}]]);
 				formObj.append("<input type='hidden' name='tno' value='"+taNo+"'>");
-				formObj.append("<input type='hidden' name='emailContent' value='"+taNo+"'>");
 				formObj.submit();
 			});
 			
@@ -160,6 +159,25 @@
 				
 				formObj.attr("action", [[@{'/ta/sendEmail'}]]);
 				formObj.append("<input type='hidden' name='tno' value='"+taNo+"'>");
+				formObj.submit();
+			});
+			
+			$("#openEmailModal").click(function(){
+			     $('.modal-body #etno').val($(this).data('id'));
+			});
+			
+			$("#sendEmail").click(function(e){
+
+				e.preventDefault();
+				
+				var etno = $('.modal-body #etno');
+				var emailContent = $('.modal-body #emailContent');
+				
+				alert('??');
+				
+				formObj.attr("action", [[@{'/ta/sendEmail'}]]);
+				formObj.append("<input type='hidden' name='etno' value='"+etno+"'>");
+				formObj.append("<input type='hidden' name='emailContent' value='"+emailContent+"'>");
 				formObj.submit();
 			});
 			

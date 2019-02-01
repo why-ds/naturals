@@ -146,9 +146,7 @@ public class TAController {
 	
 	@PostMapping("modify")
 	public String modifyPost(TimeAttendance timeAttendance, PageVO vo, RedirectAttributes rttr) {
-		
 		log.info("MODIFY TA :::: " + timeAttendance);
-		
 		repo.findById(timeAttendance.getTno()).ifPresent(origin->{
 			origin.setStarttime(timeAttendance.getStarttime());
 			origin.setEndtime(timeAttendance.getEndtime());
@@ -174,13 +172,14 @@ public class TAController {
 	}
 
 	@GetMapping("/sendEmail")
-	public void sendMail(Long tno, RedirectAttributes rttr) { 
+	public void sendMail(Long etno, String emailContent, RedirectAttributes rttr) { 
 		
-		log.info(tno+"========TNO TEST");
+		log.info(etno+"========TNO TEST");
+		log.info(emailContent+"==========emailContent TEST");
 		
-		String positon = repo.findById(tno).get().getPosition().getPositionnm();
-		String name = repo.findById(tno).get().getEmployee().getEmpnm();
-		String tatype = repo.findById(tno).get().getTatype().getTatypenm();
+		String positon = repo.findById(etno).get().getPosition().getPositionnm();
+		String name = repo.findById(etno).get().getEmployee().getEmpnm();
+		String tatype = repo.findById(etno).get().getTatype().getTatypenm();
 		
 		SimpleMailMessage msg = new SimpleMailMessage();
 		
@@ -188,7 +187,7 @@ public class TAController {
 //		누구한테 보낼지 결정해야함
 		msg.setTo("dsyoon@naturalsolution.co.kr"); 
 		msg.setSubject(name+" "+positon+" "+tatype+" 관련 문의"); 
-		msg.setText("TEST 메일입니다. 죄송합니다."); 
+		msg.setText(emailContent); 
 		this.sender.send(msg);
 	}	
 	
