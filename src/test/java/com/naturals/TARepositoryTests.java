@@ -23,16 +23,16 @@ import lombok.extern.java.Log;
 public class TARepositoryTests {
 	@Autowired
 	TimeAttendanceRepository repo;
-	
+	/*
 	@Test
 	public void testList() {
-		/*
+		
 		Pageable pageable = PageRequest.of(0, 20, Direction.DESC, "tno");
 		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(null, null), pageable);
 		log.info("PAGE : "+result.getPageable());
 		log.info("============================");
 		result.getContent().forEach(timeAttendance -> log.info(""+timeAttendance));
-		*/
+		
 	}
 	
 	@Test
@@ -45,5 +45,5 @@ public class TARepositoryTests {
 		
 		result.getContent().forEach(timeAttendance -> log.info(""+timeAttendance));
 	}
-	
+	*/
 }
