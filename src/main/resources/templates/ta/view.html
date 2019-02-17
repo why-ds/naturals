@@ -97,15 +97,16 @@
 
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="2"  th:if="${#request.isUserInRole('ADMIN')}">
+				
 					<div class="pull-right" align="center">
 						<a
 							th:href="@{modify(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, tno=${vo.tno})}"
 							class="btn btn-warning">수정</a> <a
 							th:href="@{list(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, tno=${vo.tno})}"
 							class="btn btn-dark">목록</a>
-
 					</div>
+					
 				</td>
 			</tr>
 		</table>

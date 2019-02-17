@@ -19,7 +19,7 @@
 	      <li class="nav-item">
 	        <a class="nav-link" th:href="@{/ta/list}">근태현황(달력)</a>
 	      </li>
-	      <li class="nav-item dropdown" >
+	      <li class="nav-item dropdown"   th:if="${#request.isUserInRole('ADMIN')}">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          	관리자
 	        </a>
