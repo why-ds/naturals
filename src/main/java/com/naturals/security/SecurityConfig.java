@@ -33,9 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.anonymous().disable();
 		
 		http.authorizeRequests()
-//			.antMatchers("/ta/list", "/ta/sendEmail/", "/ta/view/").permitAll()
-			.antMatchers("/ta/list", "/ta/sendEmail", "/ta/view").permitAll()
-			.antMatchers("/ta/modify","/ta/register").hasRole("ADMIN");
+			.antMatchers("/ta/*").permitAll();
+//			.antMatchers("/ta/list", "/ta/sendEmail", "/ta/view").permitAll()
+//			.antMatchers("/ta/modify","/ta/register").hasRole("ADMIN");
 //			.hasAnyRole("ADMIN");
 //			.antMatchers("/ta/register")
 //			.hasAnyRole("USER", "ADMIN");
