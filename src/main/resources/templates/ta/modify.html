@@ -150,15 +150,14 @@
 				formObj.attr("method", "post");
 				formObj.submit();
 			});
-			/* $(".modbtn").click(function() {
-
-				formObj.attr("action", "modify");
+			
+			$(".modreqbtn").click(function() {
+				formObj.attr("action", "modifyReq");
 				formObj.attr("method", "post");
-
 				formObj.submit();
-			}); */
+			});
 
-			$(".modreqbtn").click(function(){
+			/* $(".modreqbtn").click(function(){
 				var formData = new FormData();
 				var inputFile = $("input[name='file']");
 				var files = inputFile[0].files;
@@ -183,10 +182,10 @@
 						console.log(data);
 					}
 				});  
+			}); */
 				
 				
-		});  
-	});	
+		});	
 		</script>
 </th:block>
 
