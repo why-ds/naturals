@@ -20,15 +20,16 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="t_eafile")
-@EqualsAndHashCode(of = "eafileno")
+@EqualsAndHashCode(of = "uuid")
 @ToString(exclude= {"electronicApproval"})
 public class EAFile {
 	@Id
-	private String eafileno;
+	private String uuid;
 	private String eano;
 	private String eafilnm;
 	private String eafilernm;
 	private String eafilesize;
+	private String uploadPath;
 	@CreationTimestamp
 	private Timestamp insertdt;
 	private String insertempno;

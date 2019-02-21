@@ -1,5 +1,7 @@
 package com.naturals.controller;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naturals.domain.Department;
@@ -164,7 +167,31 @@ public class TAController {
 		
 		return "redirect:/ta/view";
 	}
-
+	
+	@PostMapping("modifyReq")
+	public void modifyReq(MultipartFile[] file, TimeAttendance timeAttendance, PageVO vo, RedirectAttributes rttr) {
+		
+		log.info("modifyReq Called");
+		
+		String uploadFolder = "D:\\upload";
+		
+		for(MultipartFile multipartFile : file) {
+			log.info("-----------------------------------");
+			log.info("Upload file name : " + multipartFile.getOriginalFilename());
+			log.info("Upload file size : "+ multipartFile.getSize());
+			log.info("-----------------------------------");
+			
+			File saveFile = new File(uploadFolder, multipartFile.getOriginalFilename());
+			
+			try {
+				multipartFile.transferTo(saveFile);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 	
 	@GetMapping("/calendar")
 	public void calendar() {

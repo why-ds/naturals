@@ -1,6 +1,9 @@
 package com.naturals;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,4 +20,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/login");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
+
+	  @Bean
+	  public MultipartResolver multipartResolver() {
+	      StandardServletMultipartResolver resolver = new StandardServletMultipartResolver();
+	      return resolver;
+	  }
+	  
 }
