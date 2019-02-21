@@ -5,7 +5,7 @@
 
 <div class="form-group" align="center" layout:fragment="body">
 
-	<form id="f1" enctype="multipart/form-data">
+	<form id="f1" enctype="multipart/form-data" >
 
 		<div class="form-group">
 			<input type="hidden" name="tno" th:value="${vo.tno}" />
@@ -100,7 +100,14 @@
 							</div>
 						</div>
 					</td>
-
+				</tr>
+				<tr>
+					<td>첨부파일</td>
+					<td>
+						<div>
+						<input type="file" name="file"/>
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2">

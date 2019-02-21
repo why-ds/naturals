@@ -1,6 +1,7 @@
 package com.naturals.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,7 +29,7 @@ import lombok.ToString;
 @Entity
 @Table(name="t_timeattendance")
 @EqualsAndHashCode(of = "tno")
-@ToString(exclude= {"employee","position","department", "tatype"})
+@ToString(exclude= {"employee","position","department", "tatype", "electronicApproval"})
 public class TimeAttendance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,17 +38,6 @@ public class TimeAttendance {
 	private String positionno;
 	private String empno;
 	private String tatypeno;
-/*	private String gymnastics;
-	private String unchk;
-	private String dayoff;
-	private String halfdayoff;
-	private String education;
-	private String businesstrip;
-	private String outsidebusiness;
-	private String late;
-	private String leaveearly;
-	private String goingout;
-	private String leaveofabsence;*/
 	private String memo;
 	private String taday;
 	private String starttime;
@@ -73,5 +64,9 @@ public class TimeAttendance {
 	@ManyToOne
 	@JoinColumn(name="tatypeno", insertable=false, updatable=false)
 	private TAType tatype;
+	
+//	@OneToMany
+//	@JoinColumn(name="tno")
+//	private List<ElectronicApproval> electronicApproval;
 	
 }
