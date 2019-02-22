@@ -1,0 +1,211 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout1}">
+
+<div class="form-group" align="center" layout:fragment="body">
+
+	<form id="f1" enctype="multipart/form-data" >
+
+		<div class="form-group">
+			<input type="hidden" name="tno" th:value="${vo.tno}" />
+		</div>
+
+		<div class="form-group col-lg-10">
+			<table class="table">
+				<tr>
+					<td>
+						<div class="form-group ">
+							<label>사번</label>
+						</div>
+					</td>
+					<td>
+						<div class="form-group ">
+							<input class="form-control" name="empno" th:value="${vo.empno}"
+								readonly="readonly" />
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group ">
+							<label>이름</label>
+						</div>
+					</td>
+					<td>
+						<div class="form-group ">
+							<input class="form-control" name="empnm"
+								th:value="${vo.employee.empnm}" readonly="readonly" />
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group ">
+							<label>부서</label>
+						</div>
+					</td>
+					<td>
+						<div class="form-group ">
+							<select class="custom-select" name="deptno" disabled>
+								<option>부서</option>
+								<option th:each="result2:${result2}"
+									th:value="${result2.deptno}" th:text="${result2.deptnm}"
+									th:selected="${result2.deptno == vo.deptno}"></option>
+							</select>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group ">
+							<label>직급</label>
+						</div>
+					</td>
+					<td>
+						<div class="form-group ">
+							<select class="custom-select" name="positionno" disabled>
+								<option>직급</option>
+								<option th:each="result3:${result3}"
+									th:value="${result3.positionno}"
+									th:text="${result3.positionnm}"
+									th:selected="${result3.positionno == vo.positionno}"></option>
+							</select>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<div class="input-group">근태정보</div>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<div class="input-group">
+								<input type="date" class="form-control text-center" name="taday" th:value="${vo.taday}" readonly="readonly"/> 
+								<input type="time" class="form-control text-center" name="starttime_b" th:value="${vo.starttime}" readonly="readonly"/> 
+								<input type="time"	class="form-control text-center" name="endtime_b"	th:value="${vo.endtime}" readonly="readonly"/> 
+								<select class="custom-select" name="tatypeno_b" disabled>
+									<option>타입</option>
+									<option th:each="result:${result}"	th:value="${result.tatypeno}" th:text="${result.tatypenm}"	th:selected="${result.tatypeno == vo.tatypeno}"></option>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<div class="input-group">변경요청</div>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<div class="input-group">
+								<input type="date" class="form-control text-center" name="taday"	th:value="${vo.taday}" /> 
+								<input type="time"	class="form-control text-center" name="starttime" 	th:value="${vo.starttime}" />
+								<input type="time" class="form-control text-center" name="endtime"	th:value="${vo.endtime}" /> 
+								<select class="custom-select" name="tatypeno">
+									<option></option>
+									<option th:each="result:${result}" th:value="${result.tatypeno}" th:text="${result.tatypenm}"	th:selected="${result.tatypeno == vo.tatypeno}"></option>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>첨부파일</td>
+					<td>
+						<div>
+						<input type="file" name="file"/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div class="pull-right" align="center">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> 
+							<a href="#" class="btn btn-warning modreqbtn">수정요청</a> 
+							<!-- <a href="#" class="btn btn-danger delbtn">삭제</a>  -->
+							<a th:href="@{list(page=${pageVO.page},size=${pageVO.size},type=${pageVO.type},keyword=${pageVO.keyword},tno=${vo.tno})}"
+								class="btn btn-secondary"> 취소</a>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		$(document).ready(function() {
+
+			var formObj = $("#f1");
+			var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+			var maxSize = 5242880; //5mb
+			
+			function checkExtension(fileName, fileSize){ 
+				if(fileSize >= maxSize){
+					alert("파일 사이즈 초과");
+					return false;
+				}
+				if(regex.test(fileName)){
+					alert("해당 종유릐 파일은 업로드할 수 없습니다.");
+					return false;
+				}
+				return true;
+			} 
+
+			$(".delbtn").click(function() {
+				formObj.attr("action", "delete");
+				formObj.attr("method", "post");
+				formObj.submit();
+			});
+			
+			$(".modreqbtn").click(function() {
+				
+				$("select[name=tatypeno_b]").attr("disabled",  false);
+				 
+				formObj.attr("action", "modifyReq");
+				formObj.attr("method", "post");
+				formObj.submit();
+			});
+
+			/* 
+			$(".modreqbtn").click(function(){
+				var formData = new FormData();
+				var inputFile = $("input[name='file']");
+				var files = inputFile[0].files;
+				
+				alert("files.length : " + files.length);
+
+				for(var i=0; i<files.length; i++){
+					if(!checkExtension(files[i].name, files[i].size)){
+						return false;
+					}
+					formData.append("uploadFile",files[i]);
+				}
+				
+				alert('완료');
+				
+				 $.ajax({
+					url: '/ta',
+					processData: false,
+					contentType: false,data : formData, type: 'POST',
+					dataType:'json',
+					success: function(data){
+						console.log(data);
+					}
+				});  
+			}); */
+				
+		});	
+		</script>
+</th:block>
+
+</html>

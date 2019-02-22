@@ -65,8 +65,4 @@ public class TimeAttendance {
 	@JoinColumn(name="tatypeno", insertable=false, updatable=false)
 	private TAType tatype;
 	
-//	@OneToMany
-//	@JoinColumn(name="tno")
-//	private List<ElectronicApproval> electronicApproval;
-	
 }

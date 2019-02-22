@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout1}">
+
+<div class="body" layout:fragment="body">
+
+	<div>
+		<table class="table">
+	  	<thead class="thead-light" align="center">
+	  		<tr>
+	  			<th scope="col" style="display:none;"></th>
+	  			<th scope="col">부서</th>
+	  			<th scope="col">직급</th>
+	  			<th scope="col">성명</th>
+	  			<th scope="col">날짜</th>
+	  			<th scope="col">기존출근시간</th>
+	  			<th scope="col">요청출근시간</th>
+	  			<th scope="col">기존퇴근시간</th>
+	  			<th scope="col">요청출근시간</th>
+	  			<th scope="col">기존구분</th>
+	  			<th scope="col">요청구분</th>
+	  		</tr>
+	  	</thead>
+  		
+  		<tbody  th:with="result=${result.result}" align="center">
+    		<tr th:each="electronicApproval:${result.content}">
+      			<td style="display:none;"><input type="hidden" th:value=${electronicApproval.eano}></td>
+				<td>[[${electronicApproval.timeAttendance.department.deptnm}]]</td>
+				<td>[[${electronicApproval.timeAttendance.position.positionnm}]]</td>
+		    	<td>[[${electronicApproval.timeAttendance.employee.empnm}]]</td>
+		    	<td>[[${electronicApproval.timeAttendance.taday}]]</td>
+		    	<td>[[${electronicApproval.starttime_b}]]</td>
+		    	<td>[[${electronicApproval.starttime}]]</td>
+		    	<td>[[${electronicApproval.endtime_b}]]</td>
+		    	<td>[[${electronicApproval.endtime}]]</td>
+		    	<td>[[${electronicApproval.timeAttendance.tatype.tatypenm}]]</td>
+		    	<td>[[${electronicApproval.tatype.tatypenm}]]</td>
+		    </tr> 
+		  </tbody>
+  		</table>
+  	</div>
+</div>
+
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	</script>
+</th:block>

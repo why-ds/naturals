@@ -3,6 +3,8 @@ package com.naturals.domain;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -25,7 +27,8 @@ import lombok.ToString;
 public class EAStatus {
 	
 	@Id
-	private String eastatusno;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long eastatusno;
 	private String eastatusnm;
 	private String insertempno;
 	@CreationTimestamp

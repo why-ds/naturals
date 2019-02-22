@@ -25,7 +25,7 @@ import lombok.ToString;
 public class EAFile {
 	@Id
 	private String uuid;
-	private String eano;
+	private Long eano;
 	private String eafilnm;
 	private String eafilernm;
 	private String eafilesize;

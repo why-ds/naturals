@@ -3,7 +3,10 @@ package com.naturals.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,15 +31,17 @@ import lombok.ToString;
 @ToString(exclude= {"eaStatus", "timeAttendance", "eaFile"})
 public class ElectronicApproval {
 	@Id
-	private String eano;
-	private String eastatusno;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long eano;
+	@Column(columnDefinition="varchar(225) default 0") 
+	private Long eastatusno;
 	private Long tno;
 	private String starttime_b;
-	private String starttime_a;
+	private String starttime;
 	private String endtime_b;
-	private String endtime_a;
+	private String endtime;
 	private String tatypeno_b;
-	private String tatypeno_a;
+	private String tatypeno;
 	private String insertempno;
 	@CreationTimestamp
 	private Timestamp insertdt;
@@ -44,7 +49,7 @@ public class ElectronicApproval {
 	@UpdateTimestamp
 	private Timestamp updatedt;
 	private String memo;
-
+	
 	@OneToOne
 	@JoinColumn(name="eastatusno", insertable=false, updatable=false)
 	private EAStatus eaStatus;
@@ -56,4 +61,8 @@ public class ElectronicApproval {
 	@OneToMany
 	@JoinColumn(name="eano")
 	private List<EAFile> eaFile;
+
+	@ManyToOne
+	@JoinColumn(name="tatypeno", insertable=false, updatable=false)
+	private TAType tatype;
 }

@@ -34,8 +34,12 @@ public class TAType {
 	private String updateempno;
 	@UpdateTimestamp
 	private Timestamp updatedt;
-		
+	
 	@OneToMany
 	@JoinColumn(name="tatypeno")
 	private List<TimeAttendance> timeAttendance;
+
+	@OneToMany
+	@JoinColumn(name="tatypeno")
+	private List<ElectronicApproval> electronicApproval;
 }

@@ -73,7 +73,7 @@
 			<tr>
 				<td>
 					<div class="form-group">
-						<div class="input-group">출퇴근시간</div>
+						<div class="input-group">근태정보</div>
 					</div>
 				</td>
 				<td>
@@ -84,8 +84,8 @@
 								class="form-control text-center" name="starttime"
 								th:value="${vo.starttime}" readonly="readonly" /> <input
 								type="time" class="form-control text-center" name="endtime"
-								th:value="${vo.endtime}" readonly="readonly" /> <select
-								class="custom-select" name="tatypeno" disabled>
+								th:value="${vo.endtime}" readonly="readonly" /> 
+								<select class="custom-select" name="tatypeno" disabled>
 								<option>타입</option>
 								<option th:each="result:${result}" th:value="${result.tatypeno}"
 									th:text="${result.tatypenm}"
@@ -94,15 +94,14 @@
 						</div>
 					</div>
 				</td>
-
 			</tr>
 			<tr>
 				<!-- <td colspan="2"  th:if="${#request.isUserInRole('ADMIN')}"></td> -->
 				 <td colspan="2">
 					<div class="pull-right" align="center">
 						<a
-							th:href="@{modify(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, tno=${vo.tno})}"
-							class="btn btn-warning">수정</a> <a
+							th:href="@{modifyReq(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, tno=${vo.tno})}"
+							class="btn btn-warning">수정요청</a> <a
 							th:href="@{list(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, tno=${vo.tno})}"
 							class="btn btn-dark">목록</a>
 					</div>
