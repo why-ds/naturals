@@ -130,19 +130,16 @@ public class TAController {
 	}
 
 	
-	  @GetMapping("/modify") public void modify(Long tno, @ModelAttribute("pageVO") PageVO vo, Model model) {
-		  
+	  @GetMapping("/modify")
+	  public void modify(Long tno, @ModelAttribute("pageVO") PageVO vo, Model model) {
 	  log.info("MODIFY TNO : " + tno);
 	  
 	  Iterable<TAType> tAType = tarepo.findAll(); Iterable<Department> department =
 	  deptRepo.findAll(); Iterable<Position> position = posiRepo.findAll();
 	  
-	  model.addAttribute("result", tAType); model.addAttribute("result2",
-	  department); model.addAttribute("result3", position);
+	  model.addAttribute("result", tAType); model.addAttribute("result2", department); model.addAttribute("result3", position);
 	  
-	  
-	  repo.findById(tno).ifPresent(timeAttendance -> model.addAttribute("vo",
-	  timeAttendance));
+	  repo.findById(tno).ifPresent(timeAttendance -> model.addAttribute("vo", timeAttendance));
 	  
 	  }
 
@@ -164,7 +161,7 @@ public class TAController {
 		return "redirect:/ta/list";
 	}
 
-	@PostMapping("modifyReq")
+	@PostMapping("/modifyReq")
 	public String modifyReqPost(MultipartFile[] file, ElectronicApproval electronicApproval, PageVO vo, RedirectAttributes rttr) {
 		
 		log.info("MODIFY REQ :::: " + electronicApproval);
@@ -218,16 +215,13 @@ public class TAController {
 	 * log.info(String.valueOf(rttr.getFlashAttributes())); return
 	 * "redirect:/ta/list"; }
 	 */
-	
 
-	
-
-	@PostMapping("modify") 
+	@PostMapping("/modify") 
 	public String modifyPost(TimeAttendance timeAttendance, PageVO vo, RedirectAttributes rttr) {
 	  log.info("MODIFY TA :::: " + timeAttendance);
 	  repo.findById(timeAttendance.getTno()).ifPresent(origin->{
-	  origin.setStarttime(timeAttendance.getStarttime());
-	  origin.setEndtime(timeAttendance.getEndtime());
+//	  origin.setStarttime(timeAttendance.getStarttime());
+//	  origin.setEndtime(timeAttendance.getEndtime());
 	  origin.setTatypeno(timeAttendance.getTatypeno());
 	  
 	  repo.save(origin); rttr.addFlashAttribute("msg", "modSuccess");

@@ -173,8 +173,6 @@
 				var etno = $('.modal-body #etno');
 				var emailContent = $('.modal-body #emailContent');
 				
-				alert('??');
-				
 				formObj.attr("action", [[@{'/ta/sendEmail'}]]);
 				formObj.append("<input type='hidden' name='etno' value='"+etno+"'>");
 				formObj.append("<input type='hidden' name='emailContent' value='"+emailContent+"'>");
