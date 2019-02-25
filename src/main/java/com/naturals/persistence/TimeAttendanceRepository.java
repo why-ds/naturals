@@ -19,7 +19,7 @@ public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance,
 		  builder.and(timeAttendance.tno.gt(0));
 		  
 		  
-		  System.out.println("sysout: ::: ::::"+empno);
+		  System.out.println("sysout: :::::::"+empno);
 		  
 		  builder.and(timeAttendance.empno.eq(empno));
 		 

@@ -1,10 +1,13 @@
 package com.naturals.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naturals.domain.Department;
+import com.naturals.domain.EAStatus;
 import com.naturals.domain.ElectronicApproval;
 import com.naturals.domain.Position;
 import com.naturals.domain.TAType;
 import com.naturals.domain.TimeAttendance;
 import com.naturals.persistence.DepartmentRepository;
+import com.naturals.persistence.EAStatusRepository;
 import com.naturals.persistence.ElectronicApprovalRepository;
 import com.naturals.persistence.PositionRepository;
 import com.naturals.persistence.TATypeRepository;
@@ -53,6 +58,9 @@ public class TAController {
 
 	@Autowired
 	ElectronicApprovalRepository eaRepo;
+	
+	@Autowired
+	EAStatusRepository easRepo;
 
 	@GetMapping("/list")
 	public void list(@ModelAttribute("pageVO") PageVO vo, Model model) {
@@ -172,8 +180,6 @@ public class TAController {
 		 rttr.addFlashAttribute("msg","regSuccess");
 		 log.info(String.valueOf(rttr.getFlashAttributes())); 
 		 
-		
-		
 //		 repo.findById(electronicApproval.getTno()).ifPresent(origin -> {
 //		 origin.setStarttime(timeAttendance.getStarttime());
 //		 origin.setEndtime(timeAttendance.getEndtime());
@@ -258,5 +264,24 @@ public class TAController {
 		msg.setSubject(name + " " + positon + " " + tatype + " 관련 문의");
 		msg.setText(emailContent);
 		this.sender.send(msg);
+	}
+	
+	
+	@GetMapping("/reqList")
+	public void reqList(@ModelAttribute("pageVO") PageVO vo, Model model, HttpServletRequest request) {
+		log.info("reqList Called");
+		Pageable page = vo.makePageable(0, "eano");
+
+		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), empno, request.isUserInRole("ROLE_ADMIN")), page);
+				
+		Iterable<EAStatus> eaStatus = easRepo.findAll();
+
+		model.addAttribute("result", eaStatus);
+		
+		log.info(empno + "===============empno");
+
+		model.addAttribute("result", new PageMaker(result));
 	}
 }

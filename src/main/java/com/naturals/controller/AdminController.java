@@ -1,5 +1,7 @@
 package com.naturals.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +42,7 @@ public class AdminController {
 	TimeAttendanceRepository taRepo;
 	
 	@Autowired
-	TATypeRepository tarepo;
+	TATypeRepository typeRepo;
 
 	@Autowired
 	DepartmentRepository deptRepo;
@@ -52,13 +54,13 @@ public class AdminController {
 	EAStatusRepository easRepo;
 	
 	@GetMapping("/chkReqList")
-	public void chkReq(@ModelAttribute("pageVO") PageVO vo, @ModelAttribute("eavo") ElectronicApproval eavo, Model model) {
+	public void chkReqList(@ModelAttribute("pageVO") PageVO vo, @ModelAttribute("eavo") ElectronicApproval eavo, Model model, HttpServletRequest request) {
 		log.info("chkReq Called");
 		Pageable page = vo.makePageable(0, "eano");
 		
-//		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword()), page);
-
 		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), empno, request.isUserInRole("ROLE_ADMIN")), page);
 		
 		log.info("Eastatusno :::::: " + String.valueOf((eavo.getEastatusno())));
 		
@@ -68,7 +70,7 @@ public class AdminController {
 		
 		log.info(empno + "===============empno");
 		
-		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), empno), page);
+//		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword()), page);
 
 		model.addAttribute("result", new PageMaker(result));
 	}
@@ -79,11 +81,11 @@ public class AdminController {
 
 		log.info("eano :::::: " + eano);
 
-		Iterable<TAType> tAType = tarepo.findAll();
+		Iterable<TAType> taType = typeRepo.findAll();
 		Iterable<Department> department = deptRepo.findAll();
 		Iterable<Position> position = posiRepo.findAll();
 
-		model.addAttribute("result", tAType);
+		model.addAttribute("result", taType);
 		model.addAttribute("result2", department);
 		model.addAttribute("result3", position);
 
@@ -93,7 +95,8 @@ public class AdminController {
 	@PostMapping("/chkReqApproval") 
 	public String chkReqApproval(ElectronicApproval electronicApproval, PageVO vo, RedirectAttributes rttr) {
 		
-	  log.info("MODIFY TA :::: " + electronicApproval);
+	  log.info("chkReqApproval :::: " + electronicApproval);
+	  log.info("chkReqApproval.tno ::: " + electronicApproval.getTno());
 	  
 	  taRepo.findById(electronicApproval.getTno()).ifPresent(origin->{
 		  origin.setStarttime(electronicApproval.getStarttime());
@@ -103,9 +106,10 @@ public class AdminController {
 		  
 		  taRepo.save(origin); 
 	  });
-	  
+	  log.info("chkReqApproval MID");
 	  eaRepo.findById(electronicApproval.getEano()).ifPresent(origin->{
 		  origin.setEastatusno(electronicApproval.getEastatusno());
+		  origin.setMemo(electronicApproval.getMemo());
 		  origin.setUpdateempno(SecurityContextHolder.getContext().getAuthentication().getName());
 		  
 		  eaRepo.save(origin); 
@@ -113,7 +117,7 @@ public class AdminController {
 		  rttr.addFlashAttribute("msg", "approvalSuccess");
 		  rttr.addAttribute("eano", origin.getEano()); 
 	  });
-	  
+	  log.info("chkReqApproval BOT");
 	  rttr.addAttribute("page", vo.getPage()); rttr.addAttribute("size", vo.getSize()); rttr.addAttribute("type", vo.getType());
 	  rttr.addAttribute("keyword", vo.getKeyword());
 	  
@@ -137,4 +141,29 @@ public class AdminController {
 
 		return "redirect:/admin/chkReqList";
 	}
+
+	@PostMapping("/chkReqReturn") 
+	public String chkReqReturn(ElectronicApproval electronicApproval, PageVO vo, RedirectAttributes rttr) {
+		
+	  log.info("chkReqReturn :::: " + electronicApproval);
+	  log.info("electronicApproval.getEastatusno()"+electronicApproval.getEastatusno());
+	  log.info("getName()"+SecurityContextHolder.getContext().getAuthentication().getName());
+	  
+	  eaRepo.findById(electronicApproval.getEano()).ifPresent(origin->{
+		  origin.setEastatusno(electronicApproval.getEastatusno());
+		  origin.setMemo(electronicApproval.getMemo());
+		  origin.setUpdateempno(SecurityContextHolder.getContext().getAuthentication().getName());
+		  
+		  eaRepo.save(origin); 
+		  
+		  rttr.addFlashAttribute("msg", "returnSuccess");
+		  rttr.addAttribute("eano", origin.getEano()); 
+	  });
+	  
+	  rttr.addAttribute("page", vo.getPage()); rttr.addAttribute("size", vo.getSize()); rttr.addAttribute("type", vo.getType());
+	  rttr.addAttribute("keyword", vo.getKeyword());
+	  
+	  return "redirect:/admin/chkReqList"; 
+	 }	
+	
 }

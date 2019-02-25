@@ -12,27 +12,28 @@ import com.querydsl.core.types.Predicate;
 
 public interface ElectronicApprovalRepository extends CrudRepository<ElectronicApproval, Long> , QuerydslPredicateExecutor<ElectronicApproval>{
 
-	public default Predicate makePredicate(String type, String keyword, String empno) {
+	public default Predicate makePredicate(String type, String keyword, String empno, Boolean adminFlag) {
 		   
 		BooleanBuilder builder = new BooleanBuilder();
 		QElectronicApproval electronicApproval = QElectronicApproval.electronicApproval;
 		
 //		  builder.and(electronicApproval.eano.gt(0));
+		
+		  System.out.println("EArepo makePredicate type, keyword, empno :::::::"+type+", "+keyword +","+ empno +", "+ adminFlag);
 
-		  System.out.println("EArepo makePredicate type, keyword, empno :::::::"+type+", "+keyword+", "+empno);
-
-		  if(type==null) { 
-			  System.out.println("electronicApproval.eano.eq((long)1) ::::: "+electronicApproval.eano.eq((long)1));
+		  if(adminFlag == true && type == null) {
 			  builder.and(electronicApproval.eastatusno.eq((long)1));
-			  return builder; 
+			  return builder;			  
 		  }
 		  
-//		  if(eaStatusno==null) {
-//			  builder.and(electronicApproval.eastatusno.eq((long)2));
-//		  }else {		  
-//			  builder.and(electronicApproval.eastatusno.eq(Long.parseLong(eaStatusno)));
-//		  }
-//		  if(type==null) { return builder; }
+		  if(adminFlag == false && type == null) {
+			  builder.and(electronicApproval.timeAttendance.empno.eq(empno));
+			  return builder;
+		  }
+		  
+		  if(adminFlag == false) {
+			  builder.and(electronicApproval.timeAttendance.empno.eq(empno));
+		  }
 		  
 		  switch(type) {
 		  case "status": 

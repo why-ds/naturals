@@ -14,10 +14,10 @@
 	        <a class="nav-link" th:href="@{/ta/list}">공지사항<span class="sr-only">(current)</span></a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" th:href="@{/ta/list}">근태현황(표)</a>
+	        <a class="nav-link" th:href="@{/ta/list}">근태현황</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" th:href="@{/ta/list}">근태현황(달력)</a>
+	        <a class="nav-link" th:href="@{/ta/reqList}">수정요청</a>
 	      </li>
 	      <li class="nav-item dropdown"   th:if="${#request.isUserInRole('ADMIN')}">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,9 +31,9 @@
 	        </div>
 	      </li>
 	      
-	      <li class="nav-item">
+	      <!-- <li class="nav-item">
 	        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-	      </li>
+	      </li> -->
 	    </ul>
 	    <form method="post" action="/logout" >
         	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
