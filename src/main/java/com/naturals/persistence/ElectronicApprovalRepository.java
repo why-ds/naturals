@@ -11,28 +11,15 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 public interface ElectronicApprovalRepository extends CrudRepository<ElectronicApproval, Long> , QuerydslPredicateExecutor<ElectronicApproval>{
-
+//ADMIN용
 	public default Predicate makePredicate(String type, String keyword, String empno, Boolean adminFlag) {
 		   
 		BooleanBuilder builder = new BooleanBuilder();
 		QElectronicApproval electronicApproval = QElectronicApproval.electronicApproval;
 		
-//		  builder.and(electronicApproval.eano.gt(0));
-		
-		  System.out.println("EArepo makePredicate type, keyword, empno :::::::"+type+", "+keyword +","+ empno +", "+ adminFlag);
-
-		  if(adminFlag == true && type == null) {
+		  if(type == null) {
 			  builder.and(electronicApproval.eastatusno.eq((long)1));
 			  return builder;			  
-		  }
-		  
-		  if(adminFlag == false && type == null) {
-			  builder.and(electronicApproval.timeAttendance.empno.eq(empno));
-			  return builder;
-		  }
-		  
-		  if(adminFlag == false) {
-			  builder.and(electronicApproval.timeAttendance.empno.eq(empno));
 		  }
 		  
 		  switch(type) {
@@ -49,7 +36,37 @@ public interface ElectronicApprovalRepository extends CrudRepository<ElectronicA
 //			  builder.and(timeAttendance.memo.like("%" + keyword + "%"));
 //			  break;
 		  }
-		  
 		return builder;
 	}
+	
+	
+// USER용
+	public default Predicate makePredicate2(String type, String keyword, String empno, Boolean adminFlag) {
+
+		BooleanBuilder builder = new BooleanBuilder();
+		QElectronicApproval electronicApproval = QElectronicApproval.electronicApproval;
+		
+		  System.out.println("EArepo makePredicate type, keyword, empno :::::::"+type+", "+keyword +","+ empno +", "+ adminFlag);
+
+		 builder.and(electronicApproval.timeAttendance.empno.eq(empno));
+
+		  if(type == null) {return builder;}
+		  
+		  switch(type) {
+		  case "status": 
+			  builder.and(electronicApproval.eastatusno.eq(Long.parseLong(keyword)));
+			  break;
+//		  case "enm":
+//			  builder.and(timeAttendance.employee.empno.like("%"+ keyword + "%"));
+//			  break;
+//		  case "eno":
+//			  builder.and(timeAttendance.empno.like("%" + keyword + "%"));
+//			  break; 
+//		  case "m": 
+//			  builder.and(timeAttendance.memo.like("%" + keyword + "%"));
+//			  break;
+		  }
+		return builder;
+	}
+	
 }

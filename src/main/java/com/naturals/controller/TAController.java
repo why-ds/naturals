@@ -274,7 +274,7 @@ public class TAController {
 
 		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), empno, request.isUserInRole("ROLE_ADMIN")), page);
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate2(vo.getType(), vo.getKeyword(), empno, request.isUserInRole("ROLE_ADMIN")), page);
 				
 		Iterable<EAStatus> eaStatus = easRepo.findAll();
 

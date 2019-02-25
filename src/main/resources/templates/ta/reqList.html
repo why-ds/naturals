@@ -20,7 +20,7 @@
 	  			<th scope="col">기존구분</th>
 	  			<th scope="col">요청구분</th>
 	  			<th scope="col">결재상태</th>
-	  			<th scope="col">반려사유</th>
+	  			<th scope="col">담당자의견</th>
 	  		</tr>
 	  	</thead>
   		
@@ -38,7 +38,7 @@
 		    	<td>[[${electronicApproval.tatype.tatypenm}]]</td>
 		    	<td>[[${electronicApproval.eaStatus.eastatusnm}]]</td>
 		    	<td><button type="button" th:id="openEmailModal" th:name="${itrStat.index}" th:value="${electronicApproval.memo}" th:data-index="${itrStat.index}"
-		    	 class="btn btn-outline-secondary" data-toggle="modal" th:data-id='${electronicApproval.memo}' data-target='#emailModalCenter'>확인</button></td>
+		    	 class="btn btn-outline-secondary" data-toggle="modal" th:data-id='${electronicApproval.memo}' data-target='#emailModalCenter' data-unique="${itrStat.index}">확인</button></td>
 		    </tr> 
 		    
 		    <!-- +${itrStat.index} -->
@@ -59,7 +59,7 @@
       </div>
       <div class="modal-body">
          <div class="form-group">
-           <textarea class="form-control" id="emailContent" rows="3"></textarea>
+           <textarea class="form-control" id="reqContent" rows="3"></textarea>
          </div>
       </div>
       <div class="modal-footer">
@@ -132,19 +132,11 @@
 		
 		var formObj = $("#f1");
 		
-		$("#openEmailModal").click(function(){
-			var memo__ = $('#memo').val();
-			var memo = $(this).attr('name');
-			var text = $(this).attr('name');
+		$(document).on("click", "#openEmailModal", function(){
 			
-			divs = $('#openEmailModal"');
-			for(ind in divs){
-				div =divs[ind]
-			}
+			var memo = $(this).val();
 			
-			alert(text);
-			
-		     $('.modal-body #emailContent').val(memo);
+		     $('.modal-body #reqContent').val(memo);
 		});
 		
 		$(".pagination a").click(function(e) {

@@ -5,10 +5,9 @@
 
 <div class="body" layout:fragment="body">
 
-<div class="float-right">
+<!-- <div class="float-right">
 	<a class="badge badge-secondary" th:href="@{register}">신규등록</a>
-</div>
-
+</div> -->
 
 <table class="table">
   <thead class="thead-light" align="center">
@@ -21,7 +20,7 @@
       <th scope="col">퇴근시간</th>
       <th scope="col">구분</th>
       <th scope="col">비고</th>
-      <th scope="col">문의하기</th>
+      <!-- <th scope="col">문의하기</th> -->
     </tr>
   </thead> 
   <tbody th:with="result=${result.result}" align="center">
@@ -34,7 +33,7 @@
       <td>[[${timeAttendance.endtime}]]</td>
       <td>[[${timeAttendance.tatype.tatypenm}]]</td>
       <td>[[${timeAttendance.memo}]]</td>
-      <td><button type="button" id="openEmailModal" class="btn btn-outline-secondary" data-toggle="modal" th:data-id='${timeAttendance.tno}' data-target='#emailModalCenter'>문의</button></td>
+      <!-- <td><button type="button" id="openEmailModal" class="btn btn-outline-secondary" data-toggle="modal" th:data-id='${timeAttendance.tno}' data-target='#emailModalCenter'>문의</button></td> -->
     </tr> 
   </tbody>
 </table>
