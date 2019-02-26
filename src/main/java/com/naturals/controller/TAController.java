@@ -263,7 +263,7 @@ public class TAController {
 		msg.setTo("dsyoon@naturalsolution.co.kr");
 		msg.setSubject(name + " " + positon + " " + tatype + " 관련 문의");
 		msg.setText(emailContent);
-		this.sender.send(msg);
+		this.sender.send(msg); 
 	}
 	
 	

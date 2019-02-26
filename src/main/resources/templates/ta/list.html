@@ -19,6 +19,7 @@
       <th scope="col">출근시간</th>
       <th scope="col">퇴근시간</th>
       <th scope="col">구분</th>
+      <th scope="col">휴일구분</th>
       <th scope="col">비고</th>
       <!-- <th scope="col">문의하기</th> -->
     </tr>
@@ -32,6 +33,7 @@
       <td>[[${timeAttendance.starttime}]]</td>
       <td>[[${timeAttendance.endtime}]]</td>
       <td>[[${timeAttendance.tatype.tatypenm}]]</td>
+      <td>[[${timeAttendance.scheduleType.schedulename}]]</td>
       <td>[[${timeAttendance.memo}]]</td>
       <!-- <td><button type="button" id="openEmailModal" class="btn btn-outline-secondary" data-toggle="modal" th:data-id='${timeAttendance.tno}' data-target='#emailModalCenter'>문의</button></td> -->
     </tr> 

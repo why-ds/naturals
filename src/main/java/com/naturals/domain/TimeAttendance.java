@@ -1,7 +1,6 @@
 package com.naturals.domain;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,7 +27,7 @@ import lombok.ToString;
 @Entity
 @Table(name="t_timeattendance")
 @EqualsAndHashCode(of = "tno")
-@ToString(exclude= {"employee","position","department", "tatype", "electronicApproval"})
+@ToString(exclude= {"employee","position","department", "tatype", "scheduleType"})
 public class TimeAttendance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +40,7 @@ public class TimeAttendance {
 	private String taday;
 	private String starttime;
 	private String endtime;
+	private String scheduleid;
 	private String insertempno;
 	@CreationTimestamp
 	private Timestamp insertdt;
@@ -64,5 +63,9 @@ public class TimeAttendance {
 	@ManyToOne
 	@JoinColumn(name="tatypeno", insertable=false, updatable=false)
 	private TAType tatype;
+
+	@ManyToOne
+	@JoinColumn(name="scheduleid", insertable=false, updatable=false)
+	private ScheduleType scheduleType;
 	
 }
