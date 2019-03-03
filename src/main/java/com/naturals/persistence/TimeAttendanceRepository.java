@@ -1,5 +1,9 @@
 package com.naturals.persistence;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 
@@ -15,13 +19,21 @@ public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance,
 		   
 		BooleanBuilder builder = new BooleanBuilder();
 		QTimeAttendance timeAttendance = QTimeAttendance.timeAttendance;
+
+		LocalDate date = LocalDate.now();
+		String maxDay = String.valueOf(date.withDayOfMonth(date.lengthOfMonth()));
+		String minDay= String.valueOf(date.withDayOfMonth(01));
 		
-		  builder.and(timeAttendance.tno.gt(0));
+		System.out.println("maxDay ::"+maxDay);
+		System.out.println("minDay ::"+minDay);
+		
+		builder.and(timeAttendance.tno.gt(0));
 		  
-		  System.out.println("sysout: :::::::"+empno);
-		  
-		  builder.and(timeAttendance.empno.eq(empno));
-		  
+		builder.and(timeAttendance.empno.eq(empno));
+		
+		builder.and(timeAttendance.taday.between(minDay, maxDay));
+		
+		
 		  if(type==null) { return builder; }
 		  
 		  switch(type) {

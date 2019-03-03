@@ -1,12 +1,12 @@
 package com.naturals.controller;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,6 +65,9 @@ public class TAController {
 
 	@GetMapping("/list")
 	public void list(@ModelAttribute("pageVO") PageVO vo, Model model) {
+		
+		EntityManager em = null;
+		
 		Pageable page = vo.makePageable(0, "taday");
 
 //		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword()), page);
@@ -74,7 +77,7 @@ public class TAController {
 		log.info(empno + "===============empno");
 
 		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), empno), page);
-
+		
 		model.addAttribute("result", new PageMaker(result));
 	}
 
