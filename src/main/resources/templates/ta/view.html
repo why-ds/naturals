@@ -101,8 +101,8 @@
 					<div class="pull-right" align="center">
 						<a
 							th:href="@{modifyReq(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, tno=${vo.tno})}"
-							class="btn btn-warning">수정요청</a> <a
-							th:href="@{list(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, tno=${vo.tno})}"
+							class="btn btn-warning">수정</a> <a
+							th:href="@{list(page=${pageVO.page}, size=${pageVO.size},  type=${pageVO.type}, keyword=${pageVO.keyword}, sdate=${pageVO.sdate}, edate=${pageVO.edate}, tno=${vo.tno})}"
 							class="btn btn-dark">목록</a>
 					</div>
 				</td>

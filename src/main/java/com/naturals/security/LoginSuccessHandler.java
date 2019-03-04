@@ -27,7 +27,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		}
 		
 //		임시입니다 윤동섭 임시입니다. 190129
-		nextURL = "/ta/list";
+		nextURL = "/ta/list?l=l";
 		
 		log.info("-------------------"+nextURL+"-------------------");
 		

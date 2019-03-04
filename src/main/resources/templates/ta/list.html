@@ -19,7 +19,7 @@
       <th scope="col">출근시간</th>
       <th scope="col">퇴근시간</th>
       <th scope="col">구분</th>
-      <th scope="col">휴일구분</th>
+      <th scope="col">휴일근무</th>
       <th scope="col">비고</th>
       <!-- <th scope="col">문의하기</th> -->
     </tr>
@@ -65,7 +65,6 @@
   </div>
 </div>
 
-
  <!-- 페이징 시작 -->
 	<nav>
 		<div>
@@ -83,10 +82,26 @@
 		</div>
 	</nav> 
 	
-	
-	
 	<div class="form-row justify-content-center">
     	<div class="col-auto">
+    		<input type="date" id="sdate" th:value="${pageVO.sdate}"  class="form-control"/>
+		</div>
+		<div class="col-auto">
+    		~
+		</div>
+		<div class="col-auto">
+    		<input type="date" id="edate" th:value="${pageVO.edate}" class="form-control"/>
+		</div>
+    	
+     	<div class="col-auto">
+	     	<select class="custom-select" id="searchType">
+				<option value="">구분</option>
+				<option th:each="result2:${result2}"	th:value="${result2.tatypeno}" th:text="${result2.tatypenm}" 	th:selected="${result2.tatypeno == pageVO.type}"></option>
+			</select>
+		</div>
+		
+    <!--
+     	<div class="col-auto">
 			<select class="custom-select custom-select-sm" id="searchType">
 				<option>검색</option>
 				<option value='d' th:selected="${pageVO.type} == 'd'">부서</option>
@@ -98,8 +113,9 @@
 		<div class="col-auto">
 			<input type='text' id='searchKeyword' th:value='${pageVO.keyword}' class='form-control form-control-sm' >
 		</div>
+		 -->
 		<div  class="col-auto">
-			<button id='searchBtn' class='btn btn-outline-secondary btn-sm'>검색</button>
+			<button id='searchBtn' class='btn btn-outline-secondary btn-md'>검색</button>
 		</div>
 	</div>
 	<!-- SCRIPT -->
@@ -108,6 +124,8 @@
 		<input type='hidden' name='size' th:value=${result.currentPage.pageSize}>
 		<input type='hidden' name='type' th:value=${pageVO.type}>
 		<input type='hidden' name='keyword' th:value=${pageVO.keyword}>
+		<input type='hidden' name='sdate' th:value=${pageVO.sdate}>
+		<input type='hidden' name='edate' th:value=${pageVO.edate}>
 	</form>
 </div>
 
@@ -184,11 +202,23 @@
 				
 				var typeStr = $("#searchType").find(":selected").val();
 				var keywordStr = $("#searchKeyword").val();
+				var sdateStr = $("#sdate").val();
+				var edateStr = $("#edate").val();
 				
+				if(edateStr=="" || edateStr==null){
+				}else if(edateStr!=""){
+					if(sdateStr>edateStr){
+						alert('시작일자가 종료일자보다 클 수 없습니다.');
+						return false
+					}
+				}
+
 				console.log(typeStr, "" , keywordStr);
 				
 				formObj.find("[name='type']").val(typeStr);
 				formObj.find("[name='keyword']").val(keywordStr);
+				formObj.find("[name='sdate']").val(sdateStr);
+				formObj.find("[name='edate']").val(edateStr);
 				formObj.find("[name='page']").val("1");
 				formObj.submit();
 			});

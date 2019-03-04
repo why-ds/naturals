@@ -110,7 +110,6 @@
 								<input type="time"	class="form-control text-center" name="starttime" 	th:value="${vo.starttime}" />
 								<input type="time" class="form-control text-center" name="endtime"	th:value="${vo.endtime}" /> 
 								<select class="custom-select" name="tatypeno">
-									<option></option>
 									<option th:each="result:${result}" th:value="${result.tatypeno}" th:text="${result.tatypenm}"	th:selected="${result.tatypeno == vo.tatypeno}"></option>
 								</select>
 							</div>

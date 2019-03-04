@@ -13,6 +13,8 @@ public class PageVO {
 	
 	private String keyword;
 	private String type;
+	private String sdate;
+	private String edate;
 
 	public PageVO() {
 		this.page = 1;
@@ -36,6 +38,23 @@ public class PageVO {
 		this.type = type;
 	}
 
+
+	public String getSdate() {
+		return sdate;
+	}
+
+	public void setSdate(String sdate) {
+		this.sdate = sdate;
+	}
+
+	public String getEdate() {
+		return  edate;
+	}
+
+	public void setEdate(String edate) {
+		this.edate = edate;
+	}
+	
 	public int getPage() {
 		return page;
 	}

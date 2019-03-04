@@ -1,7 +1,5 @@
 package com.naturals.controller;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,22 +61,23 @@ public class TAController {
 	@Autowired
 	EAStatusRepository easRepo;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/list")
-	public void list(@ModelAttribute("pageVO") PageVO vo, Model model) {
-		
-		EntityManager em = null;
+	public void list(@ModelAttribute("pageVO") PageVO vo, Model model, HttpServletRequest request) {
 		
 		Pageable page = vo.makePageable(0, "taday");
 
-//		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword()), page);
-
+		Iterable<TAType> taType = tarepo.findAll();
+		
+		String hFlag =  request.getParameter("l");
+		
 		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		log.info(empno + "===============empno");
-
-		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), empno), page);
+		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), vo.getSdate(), vo.getEdate(),empno, hFlag), page);
 		
 		model.addAttribute("result", new PageMaker(result));
+		
+		model.addAttribute("result2", taType);
 	}
 
 	@GetMapping("/register")
@@ -276,16 +275,16 @@ public class TAController {
 		log.info("reqList Called");
 		Pageable page = vo.makePageable(0, "eano");
 
-		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
+		String empno = SecurityContextHolder.getContext().getAuthentication().getName();		
 		
-		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate2(vo.getType(), vo.getKeyword(), empno, request.isUserInRole("ROLE_ADMIN")), page);
+		String hFlag = request.getParameter("l");
+		
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate2(vo.getType(), vo.getKeyword(), empno, vo.getSdate(), vo.getEdate(), request.isUserInRole("ROLE_ADMIN"), hFlag), page);
 				
 		Iterable<EAStatus> eaStatus = easRepo.findAll();
 
-		model.addAttribute("result", eaStatus);
-		
-		log.info(empno + "===============empno");
-
 		model.addAttribute("result", new PageMaker(result));
+		
+		model.addAttribute("result2", eaStatus);
 	}
 }

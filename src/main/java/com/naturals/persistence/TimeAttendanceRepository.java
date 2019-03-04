@@ -1,8 +1,6 @@
 package com.naturals.persistence;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
@@ -15,7 +13,7 @@ import com.querydsl.core.types.Predicate;
 
 public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance, Long>, QuerydslPredicateExecutor<TimeAttendance>{
 
-	public default Predicate makePredicate(String type, String keyword, String empno) {
+	public default Predicate makePredicate(String type, String keyword, String sdate, String edate,String empno, String hFlag) {
 		   
 		BooleanBuilder builder = new BooleanBuilder();
 		QTimeAttendance timeAttendance = QTimeAttendance.timeAttendance;
@@ -24,32 +22,25 @@ public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance,
 		String maxDay = String.valueOf(date.withDayOfMonth(date.lengthOfMonth()));
 		String minDay= String.valueOf(date.withDayOfMonth(01));
 		
-		System.out.println("maxDay ::"+maxDay);
-		System.out.println("minDay ::"+minDay);
-		
 		builder.and(timeAttendance.tno.gt(0));
 		  
 		builder.and(timeAttendance.empno.eq(empno));
 		
-		builder.and(timeAttendance.taday.between(minDay, maxDay));
+		if(hFlag != null) {
+			builder.and(timeAttendance.taday.between(minDay, maxDay));
+			return builder;
+		}
 		
-		
-		  if(type==null) { return builder; }
-		  
-		  switch(type) {
-		  case "d": 
-			  builder.and(timeAttendance.department.deptnm.like("%"+keyword+"%"));
-			  break;
-		  case "enm":
-			  builder.and(timeAttendance.employee.empno.like("%"+ keyword + "%"));
-			  break;
-		  case "eno":
-			  builder.and(timeAttendance.empno.like("%" + keyword + "%"));
-			  break; 
-		  case "m": 
-			  builder.and(timeAttendance.memo.like("%" + keyword + "%"));
-			  break;
-		  }
+		if((sdate == null && edate == null) || (sdate == "" && edate == "")) {
+		}else if((sdate != null && edate == null) || (sdate != "" && edate == "")){
+			builder.and(timeAttendance.taday.gt(sdate));
+		}else if((sdate != null && edate != null) || (sdate != "" && edate != "")) {
+			builder.and(timeAttendance.taday.between(sdate, edate));
+		}
+				
+		if(type != null && type != "") {
+			builder.and(timeAttendance.tatypeno.eq(type));
+		}		
 		  
 		return builder;
 	}

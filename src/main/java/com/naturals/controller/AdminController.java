@@ -106,7 +106,7 @@ public class AdminController {
 		  
 		  taRepo.save(origin); 
 	  });
-	  log.info("chkReqApproval MID");
+
 	  eaRepo.findById(electronicApproval.getEano()).ifPresent(origin->{
 		  origin.setEastatusno(electronicApproval.getEastatusno());
 		  origin.setMemo(electronicApproval.getMemo());
@@ -117,7 +117,7 @@ public class AdminController {
 		  rttr.addFlashAttribute("msg", "approvalSuccess");
 		  rttr.addAttribute("eano", origin.getEano()); 
 	  });
-	  log.info("chkReqApproval BOT");
+
 	  rttr.addAttribute("page", vo.getPage()); rttr.addAttribute("size", vo.getSize()); rttr.addAttribute("type", vo.getType());
 	  rttr.addAttribute("keyword", vo.getKeyword());
 	  
