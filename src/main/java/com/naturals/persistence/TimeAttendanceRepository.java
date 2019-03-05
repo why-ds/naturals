@@ -13,7 +13,7 @@ import com.querydsl.core.types.Predicate;
 
 public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance, Long>, QuerydslPredicateExecutor<TimeAttendance>{
 
-	public default Predicate makePredicate(String type, String keyword, String sdate, String edate,String empno, String hFlag) {
+	public default Predicate makePredicate(String type, String keyword, String sdate, String edate,String empno, String iFlag) {
 		   
 		BooleanBuilder builder = new BooleanBuilder();
 		QTimeAttendance timeAttendance = QTimeAttendance.timeAttendance;
@@ -26,7 +26,7 @@ public interface TimeAttendanceRepository extends CrudRepository<TimeAttendance,
 		  
 		builder.and(timeAttendance.empno.eq(empno));
 		
-		if(hFlag != null) {
+		if(iFlag != null) {
 			builder.and(timeAttendance.taday.between(minDay, maxDay));
 			return builder;
 		}

@@ -61,22 +61,21 @@ public class TAController {
 	@Autowired
 	EAStatusRepository easRepo;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/list")
 	public void list(@ModelAttribute("pageVO") PageVO vo, Model model, HttpServletRequest request) {
 		
-		Pageable page = vo.makePageable(0, "taday");
-
+		String iFlag = null;
+		
+		if(request.getParameter("page")==null) {
+			iFlag="0";
+		}
+		
+		Pageable page = vo.makePageable(0, "taday");		
+		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
+		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), vo.getSdate(), vo.getEdate(),empno, iFlag), page);
 		Iterable<TAType> taType = tarepo.findAll();
 		
-		String hFlag =  request.getParameter("l");
-		
-		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
-
-		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), vo.getSdate(), vo.getEdate(),empno, hFlag), page);
-		
-		model.addAttribute("result", new PageMaker(result));
-		
+		model.addAttribute("result", new PageMaker(result));		
 		model.addAttribute("result2", taType);
 	}
 
@@ -176,7 +175,7 @@ public class TAController {
 	public String modifyReqPost(MultipartFile[] file, ElectronicApproval electronicApproval, PageVO vo, RedirectAttributes rttr) {
 		
 		log.info("MODIFY REQ :::: " + electronicApproval);
-		electronicApproval.setEastatusno((long)1);
+		electronicApproval.setEastatusno(Long.valueOf(1));
 		log.info("getEastatusno : " + electronicApproval.getEastatusno());
 		eaRepo.save(electronicApproval);
 		log.info("save 끝");
@@ -273,13 +272,19 @@ public class TAController {
 	@GetMapping("/reqList")
 	public void reqList(@ModelAttribute("pageVO") PageVO vo, Model model, HttpServletRequest request) {
 		log.info("reqList Called");
+
+		String iFlag = null;
+		
+		if(request.getParameter("page")==null) {
+			iFlag="0";
+		}
+		
 		Pageable page = vo.makePageable(0, "eano");
 
 		String empno = SecurityContextHolder.getContext().getAuthentication().getName();		
+//		request.isUserInRole("ROLE_ADMIN")
 		
-		String hFlag = request.getParameter("l");
-		
-		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate2(vo.getType(), vo.getKeyword(), empno, vo.getSdate(), vo.getEdate(), request.isUserInRole("ROLE_ADMIN"), hFlag), page);
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate2(vo.getType(), vo.getKeyword(), empno, vo.getSdate(), vo.getEdate(), iFlag), page);
 				
 		Iterable<EAStatus> eaStatus = easRepo.findAll();
 

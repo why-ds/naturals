@@ -12,36 +12,43 @@ import com.querydsl.core.types.Predicate;
 
 public interface ElectronicApprovalRepository extends CrudRepository<ElectronicApproval, Long> , QuerydslPredicateExecutor<ElectronicApproval>{
 //ADMIN용
-	public default Predicate makePredicate(String type, String keyword, String empno, Boolean adminFlag) {
-		   
+	public default Predicate makePredicate(String type, String keyword, String empno,  String sdate, String edate, String iFlag) {
+		
 		BooleanBuilder builder = new BooleanBuilder();
 		QElectronicApproval electronicApproval = QElectronicApproval.electronicApproval;
 		
-		  if(type == null) {
-			  builder.and(electronicApproval.eastatusno.eq((long)1));
-			  return builder;			  
-		  }
-		  
-		  switch(type) {
-		  case "status": 
-			  builder.and(electronicApproval.eastatusno.eq(Long.parseLong(keyword)));
-			  break;
-//		  case "enm":
-//			  builder.and(timeAttendance.employee.empno.like("%"+ keyword + "%"));
-//			  break;
-//		  case "eno":
-//			  builder.and(timeAttendance.empno.like("%" + keyword + "%"));
-//			  break; 
-//		  case "m": 
-//			  builder.and(timeAttendance.memo.like("%" + keyword + "%"));
-//			  break;
-		  }
+			LocalDate date = LocalDate.now();
+			String maxDay = String.valueOf(date.withDayOfMonth(date.lengthOfMonth()));
+			String minDay= String.valueOf(date.withDayOfMonth(01));
+			
+//			builder.and(electronicApproval.tno.gt(0));
+			
+			  
+			builder.and(electronicApproval.timeAttendance.empno.eq(empno));
+
+			if(iFlag != null) {
+				builder.and(electronicApproval.timeAttendance.taday.between(minDay, maxDay));
+				builder.and(electronicApproval.eastatusno.eq(Long.valueOf(1)));
+				return builder;
+			}
+			
+			if((sdate == null && edate == null) || (sdate == "" && edate == "")) {
+			}else if((sdate != null && edate == null) || (sdate != "" && edate == "")){
+				builder.and(electronicApproval.timeAttendance.taday.goe(sdate));
+			}else if((sdate != null && edate != null) || (sdate != "" && edate != "")) {
+				builder.and(electronicApproval.timeAttendance.taday.between(sdate, edate));
+			}
+					
+			if(type != null && type != "") {
+				builder.and(electronicApproval.eastatusno.eq(Long.valueOf(type)));
+			}
+			    
 		return builder;
 	}
 	
 	
 // USER용
-	public default Predicate makePredicate2(String type, String keyword, String empno, String sdate, String edate, Boolean adminFlag, String hFlag) {
+	public default Predicate makePredicate2(String type, String keyword, String empno, String sdate, String edate, String iFlag) {
 
 		BooleanBuilder builder = new BooleanBuilder();
 		QElectronicApproval electronicApproval = QElectronicApproval.electronicApproval;
@@ -54,7 +61,7 @@ public interface ElectronicApprovalRepository extends CrudRepository<ElectronicA
 			  
 			builder.and(electronicApproval.timeAttendance.empno.eq(empno));
 
-			if(hFlag != null) {
+			if(iFlag != null) {
 				builder.and(electronicApproval.timeAttendance.taday.between(minDay, maxDay));
 				return builder;
 			}
@@ -67,7 +74,6 @@ public interface ElectronicApprovalRepository extends CrudRepository<ElectronicA
 			}
 					
 			if(type != null && type != "") {
-				System.out.println("type null or ");
 				builder.and(electronicApproval.eastatusno.eq(Long.valueOf(type)));
 			}		
 			    

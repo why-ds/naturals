@@ -101,14 +101,16 @@
      	<div class="col-auto">
 	     	<select class="custom-select" id="searchType">
 				<option value="">상태</option>
-				<option th:each="result2:${result2}"	th:value="${result2.eastatusno}" th:text="${result2.eastatusnm}" 	th:selected="${result2.eastatusno == pageVO.type}"></option>
+				<option th:each="result2:${result2}"	th:value="${result2.eastatusno}" th:text="${result2.eastatusnm}" 	th:selected="(${result2.eastatusno} == ${pageVO.type})"></option>
 			</select>
 		</div>
+		
 		<div  class="col-auto">
 			<button id='searchBtn' class='btn btn-outline-secondary btn-md'>검색</button>
 		</div>
 	</div>
-		
+		<div>
+		</div>
 	<!-- SCRIPT -->
 	<form id='f1' th:action="@{reqList}" method="get" class='col-sm-3'>
 		<input type='hidden' name='page' th:value=${result.currentPageNum}>

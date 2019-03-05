@@ -46,28 +46,56 @@
   		</table>
   	</div>
   	
+	
+	<!-- 페이징 시작 -->
+	<nav>
+		<div>
+		 	<ul class="pagination justify-content-center">
+		 		<li class="page-item" th:if="${result.prevPage}">
+					<a th:href="${result.prevPage.pageNumber}+1" class="page-link"> PREV</a>
+				</li>
+				<li class="page-item page-item-warning" th:classappend="${p.pageNumber == result.currentPageNum-1}?active:''" th:each="p:${result.pageList}">
+					<a th:href="${p.pageNumber}+1" class="page-link" >[[${p.pageNumber} +1]]</a>
+				</li>
+				<li class="page-item" th:if="${result.nextPage}">
+					<a th:href="${result.nextPage.pageNumber}+1" class="page-link"> NEXT</a>
+				</li>
+			</ul>
+		</div>
+	</nav> 
+	
 	<div class="form-row justify-content-center">
     	<div class="col-auto">
-			<select class="custom-select custom-select-sm" id="searchType">
-				<option>검색</option>
-				<option value='status' th:selected="${pageVO.type} == 'status'">상태</option>
+    		<input type="date" id="sdate" th:value="${pageVO.sdate}"  class="form-control"/>
+		</div>
+		<div class="col-auto">
+    		~
+		</div>
+		<div class="col-auto">
+    		<input type="date" id="edate" th:value="${pageVO.edate}" class="form-control"/>
+		</div>
+    	
+     	<div class="col-auto">
+	     	<select class="custom-select" id="searchType">
+				<option value="">상태</option>
+				<option th:each="result2:${result2}"	th:value="${result2.eastatusno}" th:text="${result2.eastatusnm}" 	th:selected="(${result2.eastatusno} == ${pageVO.type})"></option>
 			</select>
 		</div>
 		
-		 <div class="col-auto">
-			<input type='text' id='searchKeyword' th:value='${pageVO.keyword}' class='form-control form-control-sm' >
-		</div> 
 		<div  class="col-auto">
-			<button id='searchBtn' class='btn btn-outline-secondary btn-sm'>검색</button>
+			<button id='searchBtn' class='btn btn-outline-secondary btn-md'>검색</button>
 		</div>
 	</div>
-
+		<div>
+		</div>
 	<!-- SCRIPT -->
 	<form id='f1' th:action="@{chkReqList}" method="get" class='col-sm-3'>
 		<input type='hidden' name='page' th:value=${result.currentPageNum}>
 		<input type='hidden' name='size' th:value=${result.currentPage.pageSize}>
 		<input type='hidden' name='type' th:value=${pageVO.type}>
 		<input type='hidden' name='keyword' th:value=${pageVO.keyword}>
+		<input type='hidden' name='sdate' th:value=${pageVO.sdate}>
+		<input type='hidden' name='edate' th:value=${pageVO.edate}>
 	</form>
 </div>
 
@@ -133,13 +161,26 @@
 		
 
 		$("#searchBtn").click(function(e){
+			
 			var typeStr = $("#searchType").find(":selected").val();
 			var keywordStr = $("#searchKeyword").val();
+			var sdateStr = $("#sdate").val();
+			var edateStr = $("#edate").val();
 			
+			if(edateStr=="" || edateStr==null){
+			}else if(edateStr!=""){
+				if(sdateStr>edateStr){
+					alert('시작일자가 종료일자보다 클 수 없습니다.');
+					return false
+				}
+			}
+
 			console.log(typeStr, "" , keywordStr);
 			
 			formObj.find("[name='type']").val(typeStr);
 			formObj.find("[name='keyword']").val(keywordStr);
+			formObj.find("[name='sdate']").val(sdateStr);
+			formObj.find("[name='edate']").val(edateStr);
 			formObj.find("[name='page']").val("1");
 			formObj.submit();
 		});

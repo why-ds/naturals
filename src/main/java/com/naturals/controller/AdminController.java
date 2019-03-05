@@ -55,24 +55,20 @@ public class AdminController {
 	
 	@GetMapping("/chkReqList")
 	public void chkReqList(@ModelAttribute("pageVO") PageVO vo, @ModelAttribute("eavo") ElectronicApproval eavo, Model model, HttpServletRequest request) {
-		log.info("chkReq Called");
-		Pageable page = vo.makePageable(0, "eano");
+
+		String iFlag = null;
 		
-		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), empno, request.isUserInRole("ROLE_ADMIN")), page);
-		
-		log.info("Eastatusno :::::: " + String.valueOf((eavo.getEastatusno())));
-		
+		if(request.getParameter("page")==null) {
+			iFlag="0";
+		}
+//		request.isUserInRole("ROLE_ADMIN")
+		Pageable page = vo.makePageable(0, "eano");		
+		String empno = SecurityContextHolder.getContext().getAuthentication().getName();		
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), empno, vo.getSdate(), vo.getEdate(),  iFlag), page);		
 		Iterable<EAStatus> eaStatus = easRepo.findAll();
-
-		model.addAttribute("result", eaStatus);
 		
-		log.info(empno + "===============empno");
-		
-//		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword()), page);
-
-		model.addAttribute("result", new PageMaker(result));
+		model.addAttribute("result", new PageMaker(result));		
+		model.addAttribute("result2", eaStatus);
 	}
 
 	

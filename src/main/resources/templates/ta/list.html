@@ -96,7 +96,7 @@
      	<div class="col-auto">
 	     	<select class="custom-select" id="searchType">
 				<option value="">구분</option>
-				<option th:each="result2:${result2}"	th:value="${result2.tatypeno}" th:text="${result2.tatypenm}" 	th:selected="${result2.tatypeno == pageVO.type}"></option>
+				<option th:each="result2:${result2}"	th:value="${result2.tatypeno}" th:text="${result2.tatypenm}" 	th:selected="(${result2.tatypeno} == ${pageVO.type})"></option>
 			</select>
 		</div>
 		
@@ -199,7 +199,6 @@
 			});
 			
 			$("#searchBtn").click(function(e){
-				
 				var typeStr = $("#searchType").find(":selected").val();
 				var keywordStr = $("#searchKeyword").val();
 				var sdateStr = $("#sdate").val();

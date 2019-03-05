@@ -17,6 +17,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
 		Object dest = request.getSession().getAttribute("dest");
 		String nextURL = null;
+		
+		request.setAttribute("iFlag", "0");
+		
 		if (dest != null) {
 			log.info("dest != null");
 			request.getSession().removeAttribute("dest");
@@ -25,9 +28,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 			log.info("dest != null else");
 			nextURL = super.determineTargetUrl(request, response);
 		}
-		
-//		임시입니다 윤동섭 임시입니다. 190129
-		nextURL = "/ta/list?l=l";
+
+		nextURL = "/ta/list";
 		
 		log.info("-------------------"+nextURL+"-------------------");
 		
