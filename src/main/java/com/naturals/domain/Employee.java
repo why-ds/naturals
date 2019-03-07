@@ -29,19 +29,22 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name="t_employee", uniqueConstraints = {@UniqueConstraint(columnNames = {"empno"})})
-@EqualsAndHashCode(of = "empno")
+@Table(name="t_employee", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@EqualsAndHashCode(of = "username")
 @ToString(exclude= {"position", "department", "timeAttendance", "roles"})
 public class Employee {
+	
 	@Id
+	private String username;
 	private String empno;
 	private String empnm;
 	private String password;
 	private String deptno;
 	private String positionno;
 	private String email;
-	@Column(columnDefinition="varchar default 1") 
+	@Column(columnDefinition="varchar(255) default 1") 
 	private String enabled;
+	private String pwFlag;
 	private String insertempno;
 	@CreationTimestamp
 	private Timestamp insertdt;
@@ -57,8 +60,9 @@ public class Employee {
 	@JoinColumn(name="deptno", insertable=false, updatable=false)
 	private Department department;
 	
+	
 	@OneToMany
-	@JoinColumn(name="empno")
+	@JoinColumn(name="username")
 	private List<TimeAttendance> timeAttendance;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)

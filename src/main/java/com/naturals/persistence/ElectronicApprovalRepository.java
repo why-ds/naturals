@@ -12,7 +12,7 @@ import com.querydsl.core.types.Predicate;
 
 public interface ElectronicApprovalRepository extends CrudRepository<ElectronicApproval, Long> , QuerydslPredicateExecutor<ElectronicApproval>{
 //ADMIN용
-	public default Predicate makePredicate(String type, String keyword, String empno,  String sdate, String edate, String iFlag) {
+	public default Predicate makePredicate(String type, String keyword, String username,  String sdate, String edate, String iFlag) {
 		
 		BooleanBuilder builder = new BooleanBuilder();
 		QElectronicApproval electronicApproval = QElectronicApproval.electronicApproval;
@@ -22,9 +22,8 @@ public interface ElectronicApprovalRepository extends CrudRepository<ElectronicA
 			String minDay= String.valueOf(date.withDayOfMonth(01));
 			
 //			builder.and(electronicApproval.tno.gt(0));
-			
-			  
-			builder.and(electronicApproval.timeAttendance.empno.eq(empno));
+
+//			builder.and(electronicApproval.timeAttendance.username.eq(username));
 
 			if(iFlag != null) {
 				builder.and(electronicApproval.timeAttendance.taday.between(minDay, maxDay));
@@ -48,7 +47,7 @@ public interface ElectronicApprovalRepository extends CrudRepository<ElectronicA
 	
 	
 // USER용
-	public default Predicate makePredicate2(String type, String keyword, String empno, String sdate, String edate, String iFlag) {
+	public default Predicate makePredicate2(String type, String keyword, String username, String sdate, String edate, String iFlag) {
 
 		BooleanBuilder builder = new BooleanBuilder();
 		QElectronicApproval electronicApproval = QElectronicApproval.electronicApproval;
@@ -59,7 +58,7 @@ public interface ElectronicApprovalRepository extends CrudRepository<ElectronicA
 			
 //			builder.and(electronicApproval.tno.gt(0));
 			  
-			builder.and(electronicApproval.timeAttendance.empno.eq(empno));
+			builder.and(electronicApproval.timeAttendance.username.eq(username));
 
 			if(iFlag != null) {
 				builder.and(electronicApproval.timeAttendance.taday.between(minDay, maxDay));

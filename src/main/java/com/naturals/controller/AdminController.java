@@ -63,8 +63,8 @@ public class AdminController {
 		}
 //		request.isUserInRole("ROLE_ADMIN")
 		Pageable page = vo.makePageable(0, "eano");		
-		String empno = SecurityContextHolder.getContext().getAuthentication().getName();		
-		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), empno, vo.getSdate(), vo.getEdate(),  iFlag), page);		
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();		
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate(vo.getType(), vo.getKeyword(), username, vo.getSdate(), vo.getEdate(),  iFlag), page);		
 		Iterable<EAStatus> eaStatus = easRepo.findAll();
 		
 		model.addAttribute("result", new PageMaker(result));		

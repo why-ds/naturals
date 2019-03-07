@@ -18,8 +18,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		Object dest = request.getSession().getAttribute("dest");
 		String nextURL = null;
 		
-		request.setAttribute("iFlag", "0");
-		
 		if (dest != null) {
 			log.info("dest != null");
 			request.getSession().removeAttribute("dest");

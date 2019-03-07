@@ -15,11 +15,10 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="t_employee_role")
-@EqualsAndHashCode(of = "empno")
+@EqualsAndHashCode(of = "username")
 @ToString
 public class EmployeeRole {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String empno;
+	private String username;
 	private String rolenm;
 }

@@ -30,10 +30,11 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "eano")
 @ToString(exclude= {"eaStatus", "timeAttendance", "eaFile"})
 public class ElectronicApproval {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long eano;
-	@Column(columnDefinition="varchar(225) default 0") 
+	@Column(columnDefinition="bigint(20) default 0") 
 	private Long eastatusno;
 	private Long tno;
 	private String starttime_b;

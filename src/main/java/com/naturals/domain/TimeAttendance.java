@@ -35,6 +35,7 @@ public class TimeAttendance {
 	private String deptno;
 	private String positionno;
 	private String empno;
+	private String username;
 	private String tatypeno;
 	private String memo;
 	private String taday;
@@ -49,7 +50,7 @@ public class TimeAttendance {
 	private Timestamp updatedt;
 	
 	@ManyToOne
-	@JoinColumn(name="empno", insertable=false, updatable=false)
+	@JoinColumn(name="username", insertable=false, updatable=false)
 	private Employee employee;
 	
 	@ManyToOne

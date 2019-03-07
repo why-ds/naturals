@@ -13,10 +13,11 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="authorities")
-@EqualsAndHashCode(of = "empno")
+@EqualsAndHashCode(of = "username")
 @ToString
 public class Authorities {
+	
 	@Id
-	private String empno;
+	private String username;
 	private String rolenm;
 }

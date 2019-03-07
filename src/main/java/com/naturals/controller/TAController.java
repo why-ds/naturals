@@ -1,5 +1,7 @@
 package com.naturals.controller;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +23,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.naturals.domain.Department;
 import com.naturals.domain.EAStatus;
 import com.naturals.domain.ElectronicApproval;
+import com.naturals.domain.Employee;
 import com.naturals.domain.Position;
 import com.naturals.domain.TAType;
 import com.naturals.domain.TimeAttendance;
 import com.naturals.persistence.DepartmentRepository;
 import com.naturals.persistence.EAStatusRepository;
 import com.naturals.persistence.ElectronicApprovalRepository;
+import com.naturals.persistence.EmployeeRepository;
 import com.naturals.persistence.PositionRepository;
 import com.naturals.persistence.TATypeRepository;
 import com.naturals.persistence.TimeAttendanceRepository;
@@ -60,25 +64,37 @@ public class TAController {
 	
 	@Autowired
 	EAStatusRepository easRepo;
-
+	
+	@Autowired
+	EmployeeRepository empRepo;
+	
 	@GetMapping("/list")
 	public void list(@ModelAttribute("pageVO") PageVO vo, Model model, HttpServletRequest request) {
 		
 		String iFlag = null;
 		
 		if(request.getParameter("page")==null) {
+			log.info("page == null");
 			iFlag="0";
 		}
 		
 		Pageable page = vo.makePageable(0, "taday");		
-		String empno = SecurityContextHolder.getContext().getAuthentication().getName();
-		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), vo.getSdate(), vo.getEdate(),empno, iFlag), page);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		log.info("empno :::::::::::: " + username);
+		
+		Page<TimeAttendance> result = repo.findAll(repo.makePredicate(vo.getType(), vo.getKeyword(), vo.getSdate(), vo.getEdate(),username, iFlag), page);
 		Iterable<TAType> taType = tarepo.findAll();
+		
+		Optional<Employee> employee = empRepo.findById(username);
+		Optional<String> opPwFlag = employee.map(Employee::getPwFlag);
+		String pwflag = 	opPwFlag.get();
 		
 		model.addAttribute("result", new PageMaker(result));		
 		model.addAttribute("result2", taType);
+		model.addAttribute("pwflag", pwflag);
 	}
-
+	
 	@GetMapping("/register")
 	public void registerGET(@ModelAttribute("vo") TimeAttendance vo, ModelMap model) {
 
@@ -281,10 +297,10 @@ public class TAController {
 		
 		Pageable page = vo.makePageable(0, "eano");
 
-		String empno = SecurityContextHolder.getContext().getAuthentication().getName();		
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();		
 //		request.isUserInRole("ROLE_ADMIN")
 		
-		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate2(vo.getType(), vo.getKeyword(), empno, vo.getSdate(), vo.getEdate(), iFlag), page);
+		Page<ElectronicApproval> result = eaRepo.findAll(eaRepo.makePredicate2(vo.getType(), vo.getKeyword(), username, vo.getSdate(), vo.getEdate(), iFlag), page);
 				
 		Iterable<EAStatus> eaStatus = easRepo.findAll();
 
@@ -292,4 +308,5 @@ public class TAController {
 		
 		model.addAttribute("result2", eaStatus);
 	}
+
 }

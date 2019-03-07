@@ -26,11 +26,11 @@ public class TASecurityUser extends User {
 
 	public TASecurityUser(Employee employee) {
 		
-		super(employee.getEmpno(), employee.getPassword(), makeGrantedAuthority(employee.getRoles()));
+		super(employee.getUsername(), employee.getPassword(), makeGrantedAuthority(employee.getRoles()));
 
 		this.employee = employee;
 
-		this.employeeStr = employee.getEmpno();
+		this.employeeStr = employee.getUsername();
 		
 		log.info("TASecurityUser END");
 	}

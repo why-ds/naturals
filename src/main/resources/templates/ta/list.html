@@ -9,7 +9,7 @@
 	<a class="badge badge-secondary" th:href="@{register}">신규등록</a>
 </div> -->
 
-<table class="table">
+<table class="table" >
   <thead class="thead-light" align="center">
     <tr>
       <th scope="col">부서</th>
@@ -118,6 +118,7 @@
 			<button id='searchBtn' class='btn btn-outline-secondary btn-md'>검색</button>
 		</div>
 	</div>
+	
 	<!-- SCRIPT -->
 	<form id='f1' th:action="@{list}" method="get" class='col-sm-3'>
 		<input type='hidden' name='page' th:value=${result.currentPageNum}>
@@ -136,6 +137,7 @@
 		$(window).on('load', function(){
 			
 			var msg = [[${msg}]];
+			var pwflag = [[${pwflag}]];
 			
 			if(msg =='regSuccess') {
 				alert("등록이 완료되었습니다.");
@@ -146,7 +148,10 @@
 				var stateObj = { msg: "" };
 			}
 			
-			
+			if(pwflag == '0'){
+				alert('첫 로그인 시 비밀번호 변경이 필요합니다.');
+				window.location = "/pwChange";
+			}
 		});
 	
 		$(document).ready(function() {
